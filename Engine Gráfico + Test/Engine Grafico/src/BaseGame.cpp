@@ -39,7 +39,9 @@ void BaseGame::update()
 
 void BaseGame::initEngine()
 {
-	ventana.Start(600, 600, "Test2");
+	ventana.setWidth(600);
+	ventana.setHeight(600);
+	ventana.Start("Test2");
 	input = Input(ventana.window);
 	collision = new CollisionManager();
 }

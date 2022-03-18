@@ -65,7 +65,6 @@ unsigned int  Renderer::CreateShader(const char* vertexShader, const char* fragm
 
 Renderer::Renderer() {
 
-	camera = Camera();
 }
 
 Renderer::~Renderer() {
@@ -84,8 +83,8 @@ void Renderer::Draw(unsigned int *indices, float *vertices, glm::mat4 _trsmatrix
 	/// Requiere previamente haber, attacheado el shader, compilado el shader y linkeado el programa, atachear otro shader, desatachear este o borrar el shader durante la compilacion no van a afectar el estado actual del programa, pero si si es que volvemos a linkear
 
 	glUniformMatrix4fv(model, 1, GL_FALSE, glm::value_ptr(_trsmatrix));
-	glUniformMatrix4fv(projInd, 1, GL_FALSE, glm::value_ptr(camera.proj));
-	glUniformMatrix4fv(viewInd, 1, GL_FALSE, glm::value_ptr(camera.view));
+	glUniformMatrix4fv(projInd, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
+	glUniformMatrix4fv(viewInd, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
 
 	switch (shapeType)
 	{
@@ -201,8 +200,8 @@ void Renderer::DrawSprite(unsigned int& vao, unsigned int& vbo, float* vertices,
 	/// Requiere previamente haber, attacheado el shader, compilado el shader y linkeado el programa, atachear otro shader, desatachear este o borrar el shader durante la compilacion no van a afectar el estado actual del programa, pero si si es que volvemos a linkear
 
 	glUniformMatrix4fv(textureModel, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(projInd, 1, GL_FALSE, glm::value_ptr(camera.proj));
-	glUniformMatrix4fv(viewInd, 1, GL_FALSE, glm::value_ptr(camera.view));
+	glUniformMatrix4fv(projInd, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
+	glUniformMatrix4fv(viewInd, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	UnbindBuffers();

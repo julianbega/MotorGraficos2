@@ -13,7 +13,6 @@
 
 using namespace std;
 
-#include "Camera.h"
 #include "Global.h"
 
 enum ShadersType
@@ -30,7 +29,6 @@ class ENGINE_API Renderer {
 public:
 	Renderer();
 	~Renderer();
-	Camera camera;
 	void Draw(unsigned int *indices, float *vertices, glm::mat4 _trsmatrix, int shapeType);
 	void CreateShader();
 	void initRender(unsigned int vao, unsigned int vbo, unsigned int ibo);

@@ -9,7 +9,7 @@ Window::~Window() {
 
 }
 
-int Window::Start(int width, int height, const char* windowName)
+int Window::Start(const char* windowName)
 {
 	//pregunta si la library está inicializada
 	if (!glfwInit())
@@ -61,3 +61,25 @@ void Window::CloseWindow()
 	// cierra la ventana
 	glfwTerminate();
 }
+
+void Window::setWidth(int newWith)
+{
+	width = newWith;
+}
+
+int Window::getWidth()
+{
+	return width;
+}
+
+void Window::setHeight(int newHeight)
+{
+	height = newHeight;
+}
+
+int Window::getHeight()
+{
+	return height;
+}
+
+

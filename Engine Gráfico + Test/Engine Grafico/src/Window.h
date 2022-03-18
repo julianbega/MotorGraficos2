@@ -14,11 +14,18 @@ public:
 	Window();
 	~Window();
 	GLFWwindow* window;
-	int Start(int width, int height, const char* windowName);
+	int Start(const char* windowName);
 	static void ClearBackground();
 	bool WindowShouldClose();
 	void FinishWindowCycle();
 	void CloseWindow();
+	void setWidth(int newWith);
+	int getWidth();
+	void setHeight(int newHeight);
+	int getHeight();
+private:
+	int width;
+	int height;
 
 };
 #endif // !WINDOW_H
