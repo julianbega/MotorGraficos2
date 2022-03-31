@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{5c734f24-15b4-4271-97f0-58cfd298441e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{219bdd42-d197-4d1c-a07a-7e4f71a58b6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Lib">
+      <UniqueIdentifier>{7284401a-2d10-4948-99a1-0ac9962eb2bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Lib\LibHeaders">
+      <UniqueIdentifier>{0880dda3-c88c-453c-8359-0f08629c10cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Lib\LibSource">
+      <UniqueIdentifier>{b35817af-20c6-48d9-b833-7953abeea7cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{035ee731-c1ee-40f0-8be6-1d34fd0c072c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{f71670f3-175f-489d-8d8f-e8ce4c215999}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\export.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gamebase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imconfig.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imgui.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imgui_internal.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui_layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imgui_impl_glfw.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imgui_impl_opengl3.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imstb_rectpack.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imstb_textedit.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\imstb_truetype.h">
+      <Filter>GUI\Lib\LibHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dataManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\inspector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture_importer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\time_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cameraThirdPerson.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cameraFirstPerson.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\gamebase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\imgui.cpp">
+      <Filter>GUI\Lib\LibSource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\imgui_demo.cpp">
+      <Filter>GUI\Lib\LibSource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\imgui_draw.cpp">
+      <Filter>GUI\Lib\LibSource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui_layer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\imgui_impl_opengl3.cpp">
+      <Filter>GUI\Lib\LibSource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\imgui_impl_glfw.cpp">
+      <Filter>GUI\Lib\LibSource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\imgui_widgets.cpp">
+      <Filter>GUI\Lib\LibSource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dataManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\inspector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture_importer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\time_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cameraFirstPerson.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cameraThirdPerson.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shaders\vertexShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\shaders\fragmentShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\shaders\texFragmentShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
