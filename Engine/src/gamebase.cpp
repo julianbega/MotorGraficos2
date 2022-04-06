@@ -18,7 +18,7 @@ Gamebase::Gamebase() {
     gui = new GuiLayer(window, dataManager);
     inspector = new Inspector(window, dataManager);
     worldData = new WorldData(window, dataManager);
-    camera = new Camera(window, renderer, ProjectionType::perspective);
+    camera = new Camera(window, renderer, ProjectionType::perspective, CameraType::free);
 }
 
 Gamebase::Gamebase(CameraType cam) {
@@ -28,19 +28,8 @@ Gamebase::Gamebase(CameraType cam) {
     gui = new GuiLayer(window, dataManager);
     inspector = new Inspector(window, dataManager);
     worldData = new WorldData(window, dataManager);
-    switch (cam)
-    {
-    case CameraType::firstPerson :
-        camera = new CameraFirstPerson::Camera(window, renderer, ProjectionType::perspective);
-        break;
-    case CameraType::thirdPerson:
-        camera = new CameraThirdPerson::Camera(window, renderer, ProjectionType::perspective);
-        break;
-    default:
-        camera = new Camera(window, renderer, ProjectionType::perspective);
-        break;
-    }
-    camera = new Camera(window, renderer, ProjectionType::perspective);
+	camera = new Camera(window, renderer, ProjectionType::perspective, cam);
+	
 }
 
 Gamebase::~Gamebase() {

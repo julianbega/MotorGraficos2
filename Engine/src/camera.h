@@ -10,11 +10,11 @@ enum class ENGINE_API ProjectionType{
 	orthographic, perspective
 };
 enum class ENGINE_API CameraType {
-	firstPerson, thirdPerson
+	free, firstPerson, thirdPerson
 };
 class ENGINE_API Camera : public Entity {
 	ProjectionType _type;
-
+	CameraType _camTytpe;
 	glm::mat4 _view;
 	glm::mat4 _proj;
 	glm::vec3 _right;
@@ -29,10 +29,10 @@ class ENGINE_API Camera : public Entity {
 	float yaw;
 
 public: 
-	float rotationSpeed = 100;
-	float movementSpeed = 0;
+	float rotationSpeed = 10;
+	float movementSpeed = 1;
 	float speed = 1;
-	Camera(class Window* window, Renderer* renderer,ProjectionType type);
+	Camera(class Window* window, Renderer* renderer,ProjectionType type, CameraType camTytpe);
 	~Camera();
 	void updateView();
 	void setProjection(ProjectionType type);

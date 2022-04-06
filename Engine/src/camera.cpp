@@ -10,7 +10,7 @@
 #include "window.h"
 
 
-Camera::Camera(Window* window, Renderer* renderer, ProjectionType type) : Entity(renderer) {
+Camera::Camera(Window* window, Renderer* renderer, ProjectionType type, CameraType camTytpe) : Entity(renderer) {
 	_window = window;
 	_view = glm::mat4(1.0f);
 	_proj = glm::mat4(1.0f);
@@ -18,7 +18,7 @@ Camera::Camera(Window* window, Renderer* renderer, ProjectionType type) : Entity
 	_type = type;
 	_worldUp = glm::vec3(0, 1, 0);
 	_forward = glm::vec3(0, 0, -1);
-
+	_camTytpe = camTytpe;
 	DataManager* data = DataManager::Get();
 	data->addEntity(this, _id);
 }
@@ -114,19 +114,19 @@ void Camera::inputs(Input input,Time time)
 	}
 	if (input.getKey(keyCode::RIGHT)) {
 		rotationSpeed = rotationSpeed * time.getDeltaTime();
-		rotateYaw(rotationSpeed);
+		this->rotateYaw(rotationSpeed);
 	}
 	if (input.getKey(keyCode::LEFT)) {
 		rotationSpeed = rotationSpeed * time.getDeltaTime();
-		rotateYaw(-rotationSpeed);
+		this->rotateYaw(-rotationSpeed);
 	}
 	if (input.getKey(keyCode::UP)) {
 		rotationSpeed = rotationSpeed * time.getDeltaTime();
-		rotatePitch(rotationSpeed);
+		this->rotatePitch(rotationSpeed);
 	}
 	if (input.getKey(keyCode::DOWN)) {
 		rotationSpeed = rotationSpeed * time.getDeltaTime();
-		rotatePitch(-rotationSpeed);
+		this->rotatePitch(-rotationSpeed);
 	}
 }
 
