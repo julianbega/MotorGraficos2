@@ -122,16 +122,16 @@ std::string Entity::GetName() {
 
 void Entity::updateVectors(glm::vec3 worldUp)
 {
-	_forward.x = glm::cos(glm::radians(transform.rotation.y)) * glm::cos(glm::radians(transform.rotation.x));
-	_forward.y = glm::sin(glm::radians(transform.rotation.x));
-	_forward.z = glm::sin(glm::radians(transform.rotation.y)) * glm::cos(glm::radians(transform.rotation.x));
-	_forward = glm::normalize(_forward);
-	_right = glm::normalize(glm::cross(_forward, worldUp));
-	_up = glm::normalize(glm::cross(_right, _forward));
+	this->_forward.x = glm::cos(glm::radians(this->transform.rotation.y)) * glm::cos(glm::radians(this->transform.rotation.x));
+	this->_forward.y = glm::sin(glm::radians(this->transform.rotation.x));
+	this->_forward.z = glm::sin(glm::radians(this->transform.rotation.y)) * glm::cos(glm::radians(this->transform.rotation.x));
+	this->_forward = glm::normalize(this->_forward);
+	this->_right = glm::normalize(glm::cross(this->_forward, worldUp));
+	this->_up = glm::normalize(glm::cross(this->_right, this->_forward));
 
 	//limita rotacion de pitch
-	if (transform.rotation.x >= 89.9f) transform.rotation.x = 89.9f;
-	if (transform.rotation.x <= -89.9f) transform.rotation.x = -89.9f;
+	if (this->transform.rotation.x >= 89.9f) this->transform.rotation.x = 89.9f;
+	if (this->transform.rotation.x <= -89.9f) this->transform.rotation.x = -89.9f;
 }
 
 

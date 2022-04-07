@@ -73,6 +73,7 @@ ProjectionType Camera::getProjectionType() {
 
 void Camera::draw(Shader& shader) {
 	updateVectors(_worldUp);
+	_pivot->updateVectors(_worldUp);
 	updateView();
 
 	_renderer->drawCamera(shader, GetModel(), getView(), getProjection());
