@@ -60,35 +60,7 @@ void Game::Inputs() {
 	// add inputs here
 	camera->inputs(input, time);	
 
-
-	if (input.getKey(keyCode::W)) {
-		camera->transform.position += camera->getForward() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::S)) {
-		camera->transform.position -= camera->getForward() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::A)) {
-		camera->transform.position -= camera->getRight() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::D)) {
-		camera->transform.position += camera->getRight() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::RIGHT)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotateYaw(camera->rotationSpeed);
-	}
-	if (input.getKey(keyCode::LEFT)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotateYaw(-camera->rotationSpeed);
-	}
-	if (input.getKey(keyCode::UP)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotatePitch(camera->rotationSpeed);
-	}
-	if (input.getKey(keyCode::DOWN)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotatePitch(-camera->rotationSpeed);
-	}
+	
 }
 
 	// free memory

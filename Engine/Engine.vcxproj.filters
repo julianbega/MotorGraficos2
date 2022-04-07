@@ -120,12 +120,6 @@
     <ClInclude Include="src\camera.h">
       <Filter>Header Files\Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="src\cameraThirdPerson.h">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cameraFirstPerson.h">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gamebase.cpp">
@@ -195,12 +189,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\camera.cpp">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cameraFirstPerson.cpp">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cameraThirdPerson.cpp">
       <Filter>Source Files\Cameras</Filter>
     </ClCompile>
   </ItemGroup>

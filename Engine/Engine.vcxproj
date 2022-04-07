@@ -21,8 +21,6 @@
   <ItemGroup>
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\camera.h" />
-    <ClInclude Include="src\cameraFirstPerson.h" />
-    <ClInclude Include="src\cameraThirdPerson.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\export.h" />
@@ -53,8 +51,6 @@
   <ItemGroup>
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\camera.cpp" />
-    <ClCompile Include="src\cameraFirstPerson.cpp" />
-    <ClCompile Include="src\cameraThirdPerson.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\gamebase.cpp" />

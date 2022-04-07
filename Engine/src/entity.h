@@ -50,6 +50,13 @@ public:
 	int GetID();
 	void SetName(std::string name);
 	std::string GetName();
+	void updateVectors(glm::vec3 worldUp);
+	glm::vec3 getForward();
+	glm::vec3 getUp();
+	glm::vec3 getRight();
+	glm::vec3 _forward;
+	glm::vec3 _right;
+	glm::vec3 _up;
 };
 
 #endif // !ENTITY_H

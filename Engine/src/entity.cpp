@@ -28,6 +28,11 @@ Entity::Entity(Renderer* renderer) {
 	SetZRot(0.0f);
 
 	_id = _nextEntityID++; // assign id and then increase the value so the next entity doesn´t share the same one
+
+	_forward = glm::vec3(0, 0, -1);
+	_up = glm::vec3(0, 1, 0);
+	_right = glm::vec3(1, 0, 0);
+
 }
 
 Entity::~Entity() {
@@ -113,4 +118,29 @@ void Entity::SetName(std::string name) {
 
 std::string Entity::GetName() {
 	return _name;
+}
+
+void Entity::updateVectors(glm::vec3 worldUp)
+{
+	_forward.x = glm::cos(glm::radians(transform.rotation.y)) * glm::cos(glm::radians(transform.rotation.x));
+	_forward.y = glm::sin(glm::radians(transform.rotation.x));
+	_forward.z = glm::sin(glm::radians(transform.rotation.y)) * glm::cos(glm::radians(transform.rotation.x));
+	_forward = glm::normalize(_forward);
+	_right = glm::normalize(glm::cross(_forward, worldUp));
+	_up = glm::normalize(glm::cross(_right, _forward));
+
+	//limita rotacion de pitch
+	if (transform.rotation.x >= 89.9f) transform.rotation.x = 89.9f;
+	if (transform.rotation.x <= -89.9f) transform.rotation.x = -89.9f;
+}
+
+
+glm::vec3 Entity::getForward() {
+	return _forward;
+}
+glm::vec3 Entity::getUp() {
+	return _up;
+}
+glm::vec3 Entity::getRight() {
+	return _right;
 }

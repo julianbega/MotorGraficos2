@@ -11,8 +11,6 @@
 #include "world_data.h"
 #include "input.h"
 #include "camera.h"
-#include "cameraFirstPerson.h"
-#include "cameraThirdPerson.h"
 #include "camera.h"
 #include "dataManager.h"
 #include "time_manager.h"

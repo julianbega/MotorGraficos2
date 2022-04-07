@@ -13,14 +13,12 @@ enum class ENGINE_API CameraType {
 	free, firstPerson, thirdPerson
 };
 class ENGINE_API Camera : public Entity {
+	Entity* _pivot;
 	ProjectionType _type;
 	CameraType _camTytpe;
 	glm::mat4 _view;
 	glm::mat4 _proj;
-	glm::vec3 _right;
-	glm::vec3 _up;
 	glm::vec3 _worldUp;
-	glm::vec3 _forward;
 	glm::vec3 _inverseDirection;
 
 	class Window* _window;
@@ -42,15 +40,13 @@ public:
 	ProjectionType getProjectionType();
 	void draw(Shader& shader);
 	void setDirection(glm::vec3 target);
-	glm::vec3 getForward();
-	glm::vec3 getUp();
-	glm::vec3 getRight();
+	
 	void rotatePitch(float pitch);
 	void rotateYaw(float yaw);
 	void inputs(Input input, Time time);
 private:
 	void updateShader(Shader& shader);
-	void updateVectors();
+	
 };
 
 #endif // !CAMERA_H
