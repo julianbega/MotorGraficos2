@@ -48,6 +48,7 @@ void Game::Update() {
 
 	timer += time.getDeltaTime();
 
+	sprite1->SetPosition(camera->getPivot().position.x, camera->getPivot().position.y, camera->getPivot().position.z);
 	//draw
 	triangle->draw();
 	square2->draw();

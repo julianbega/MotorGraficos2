@@ -26,7 +26,9 @@ class ENGINE_API Camera : public Entity {
 	float pitch;
 	float yaw;
 
-public: 
+public:
+	glm::vec3  offset;
+
 	float rotationSpeed = 10;
 	float movementSpeed = 1;
 	float speed = 1;
@@ -40,7 +42,7 @@ public:
 	ProjectionType getProjectionType();
 	void draw(Shader& shader);
 	void setDirection(glm::vec3 target);
-	
+	Transform getPivot();
 	void rotatePitch(float pitch);
 	void rotateYaw(float yaw);
 	void inputs(Input input, Time time);

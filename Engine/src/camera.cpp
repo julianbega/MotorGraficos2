@@ -55,8 +55,15 @@ void Camera::setProjection(ProjectionType type) {
 void Camera::init(Shader& shader) {
 	setProjection(_type);
 	updateVectors(_worldUp);
+	_pivot->updateVectors(_worldUp);
 	updateView();
 	updateShader(shader);
+	if (_camTytpe == CameraType::thirdPerson)
+	{	
+		offset = glm::vec3(0, 1, 3);
+		this->transform.position += offset;
+		setDirection(_pivot->transform.position);
+	}
 }
 
 glm::mat4 Camera::getView() {
@@ -129,16 +136,16 @@ void Camera::inputs(Input input,Time time)
 	{
 		if (input.getKey(keyCode::W)) {
 			
-			_pivot->transform.position += _pivot->getForward() * (speed * time.getDeltaTime());
+			_pivot->transform.position -= _pivot->getRight() * (speed * time.getDeltaTime());
 		}
 		if (input.getKey(keyCode::S)) {
-			_pivot->transform.position -= _pivot->getForward() * (speed * time.getDeltaTime());
+			_pivot->transform.position += _pivot->getRight() * (speed * time.getDeltaTime());
 		}
 		if (input.getKey(keyCode::A)) {
-			_pivot->transform.position -= getRight() * (speed * time.getDeltaTime());
+			_pivot->transform.position -= _pivot->getForward() * (speed * time.getDeltaTime());
 		}
 		if (input.getKey(keyCode::D)) {
-			_pivot->transform.position += getRight() * (speed * time.getDeltaTime());
+			_pivot->transform.position += _pivot->getForward() * (speed * time.getDeltaTime());
 		}
 		if (input.getKey(keyCode::RIGHT)) {
 			this->rotationSpeed = 100 * time.getDeltaTime();
@@ -162,6 +169,33 @@ void Camera::inputs(Input input,Time time)
 	}
 		break;
 	case CameraType::thirdPerson:
+	{
+		if (input.getKey(keyCode::W)) {
+
+			_pivot->transform.position -= _pivot->getRight() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::S)) {
+			_pivot->transform.position += _pivot->getRight() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::A)) {
+			_pivot->transform.position -= _pivot->getForward() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::D)) {
+			_pivot->transform.position += _pivot->getForward() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::RIGHT)) {
+			this->rotationSpeed = 100 * time.getDeltaTime();
+			this->rotateYaw(this->rotationSpeed);
+			_pivot->transform.rotation.y += this->rotationSpeed;
+		}
+		if (input.getKey(keyCode::LEFT)) {
+			this->rotationSpeed = 100 * time.getDeltaTime();
+			this->rotateYaw(-this->rotationSpeed);
+			_pivot->transform.rotation.y += -this->rotationSpeed;
+		}
+
+		transform.position = _pivot->transform.position + offset;
+	}
 		break;
 	default:
 		break;
@@ -182,4 +216,9 @@ void Camera::updateShader(Shader& shader){
 
 void Camera::setDirection(glm::vec3 target){
 	_inverseDirection = glm::normalize(transform.position - target);
+}
+
+Transform Camera::getPivot()
+{
+	return _pivot->transform;
 }
