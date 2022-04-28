@@ -37,6 +37,7 @@
     <ClInclude Include="src\gui\imstb_truetype.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\inspector.h" />
+    <ClInclude Include="src\light.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\shader.h" />
@@ -63,6 +64,7 @@
     <ClCompile Include="src\gui\imgui_widgets.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\inspector.cpp" />
+    <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\shader.cpp" />
@@ -75,8 +77,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\fragmentShader.frag" />
+    <None Include="src\shaders\fragmentShaderLights.frag" />
     <None Include="src\shaders\texFragmentShader.frag" />
     <None Include="src\shaders\vertexShader.vert" />
+    <None Include="src\shaders\vertexShaderLights.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

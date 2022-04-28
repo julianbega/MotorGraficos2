@@ -120,6 +120,9 @@
     <ClInclude Include="src\camera.h">
       <Filter>Header Files\Cameras</Filter>
     </ClInclude>
+    <ClInclude Include="src\light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gamebase.cpp">
@@ -191,6 +194,9 @@
     <ClCompile Include="src\camera.cpp">
       <Filter>Source Files\Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="src\light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\vertexShader.vert">
@@ -200,6 +206,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="src\shaders\texFragmentShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\shaders\vertexShaderLights.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\shaders\fragmentShaderLights.frag">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
