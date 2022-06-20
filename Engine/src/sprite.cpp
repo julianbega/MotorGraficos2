@@ -51,7 +51,7 @@ Sprite::~Sprite()
 
 void Sprite::init(){
 	LoadSprite();
-	_renderer->setTexAttribPointer(_shader.getID());
+	_renderer->setUVAttribPointer(_shader.getID());
 	bindBuffers();
 
 }

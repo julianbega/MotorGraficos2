@@ -19,17 +19,7 @@ void Renderer::createAtribPointers(unsigned int shaderAttribIndex, int dataAmmou
 	glEnableVertexAttribArray(shaderAttribIndex);
 }
 
-void Renderer::setPositionAttribPointer(unsigned int shaderID, const char* attribName) {
-    unsigned int attribute = glGetAttribLocation(shaderID, attribName);
-    createAtribPointers(attribute, 3, 6, 0);
-}
-
-void Renderer::setTintAttribPointer(unsigned int shaderID, const char* attribName) {
-    unsigned int attribute = glGetAttribLocation(shaderID, attribName);
-    createAtribPointers(attribute, 3, 6, 3);
-}
-
-void Renderer::setTexAttribPointer(unsigned int shaderID) {
+void Renderer::setUVAttribPointer(unsigned int shaderID) {
     unsigned int posAttrib = glGetAttribLocation(shaderID, "pos");
     unsigned int colorAttrib = glGetAttribLocation(shaderID, "texColor");
     unsigned int texAttrib = glGetAttribLocation(shaderID, "aTexCoord");
@@ -37,8 +27,26 @@ void Renderer::setTexAttribPointer(unsigned int shaderID) {
     createAtribPointers(posAttrib, 3, 9, 0);
     createAtribPointers(colorAttrib, 4, 9, 3);
     createAtribPointers(texAttrib, 2, 9, 7);
-
 }
+
+
+void Renderer::SetVertexAttributes(const char* name, int vertexSize, unsigned int shaderID) {
+	unsigned int attribute = glGetAttribLocation(shaderID, name);
+	createAtribPointers(attribute, 3, vertexSize, 0);
+}
+void Renderer::SetColorAttributes(const char* name, int vertexSize, unsigned int shaderID) {
+	unsigned int attribute = glGetAttribLocation(shaderID, name);
+	createAtribPointers(attribute, 3, vertexSize, 3);
+}
+void Renderer::SetTextureAttributes(const char* name, int vertexSize, unsigned int shaderID) {
+	unsigned int attribute = glGetAttribLocation(shaderID, name);
+	createAtribPointers(attribute, 2, vertexSize, 9);
+}
+void Renderer::SetNormalAttributes(const char* name, int vertexSize, unsigned int shaderID) {
+	unsigned int attribute = glGetAttribLocation(shaderID, name);
+	createAtribPointers(attribute, 3, vertexSize, 6);
+}
+
 
 void Renderer::startProgram(Shader& shader, glm::mat4 model) {
     unsigned int transformLoc = glGetUniformLocation(shader.getID(), "transform");
@@ -103,19 +111,20 @@ void Renderer::deleteBuffers(unsigned int& vao, unsigned int& vbo, unsigned int&
     glDeleteBuffers(1, &ebo);
 }
 
-void Renderer::draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount,glm::mat4 model) {
+void Renderer::draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount,glm::mat4 model, int vertexSize, int vertexIndex) {
     bindVAO(vao);
     bindVBO(vbo, vertices, verticesAmmount);
-    setPositionAttribPointer(shader.getID(), "pos");
-    setTintAttribPointer(shader.getID(), "color");
+	SetVertexAttributes( "pos", vertexSize, shader.getID());
+	SetColorAttributes("color", vertexSize, shader.getID());
     startProgram(shader, model);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, vertexIndex, GL_UNSIGNED_INT, 0);
     unbindBuffers();
 }
+
 void Renderer::drawSprite(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model){
     bindVAO(vao);
     bindVBO(vbo, vertices, verticesAmmount);
-    setTexAttribPointer(shader.getID());
+    setUVAttribPointer(shader.getID());
     startProgram(shader, model);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     unbindBuffers();

@@ -5,6 +5,7 @@
 class Game : public Gamebase{
 	Shape* triangle;
 	Shape* square2;
+	Shape* cube;
 	Sprite* sprite1;
 	Sprite* player;
 	Animation* idle;

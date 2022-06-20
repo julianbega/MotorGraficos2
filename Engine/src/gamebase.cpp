@@ -18,7 +18,7 @@ Gamebase::Gamebase() {
     gui = new GuiLayer(window, dataManager);
     inspector = new Inspector(window, dataManager);
     worldData = new WorldData(window, dataManager);
-    camera = new Camera(window, renderer, ProjectionType::perspective, CameraType::thirdPerson);
+    camera = new Camera(window, renderer, ProjectionType::perspective, CameraType::free);
 }
 
 Gamebase::Gamebase(CameraType cam) {
