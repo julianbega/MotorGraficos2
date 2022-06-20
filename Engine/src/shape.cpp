@@ -54,7 +54,7 @@ void Shape::setters() {
 		_renderer->SetVertexAttributes("pos", 9, _shader.getID());
 		_renderer->SetColorAttributes("texColor", 9, _shader.getID());
 		_renderer->SetNormalAttributes("aNormal", 9, _shader.getID());
-		_renderer->SetTextureAttributes("aTexCoord", 9, _shader.getID());
+		//_renderer->SetTextureAttributes("aTexCoord", 9, _shader.getID());
 		break;
 	default:
 		break;

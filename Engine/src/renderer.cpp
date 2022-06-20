@@ -114,8 +114,18 @@ void Renderer::deleteBuffers(unsigned int& vao, unsigned int& vbo, unsigned int&
 void Renderer::draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount,glm::mat4 model, int vertexSize, int vertexIndex) {
     bindVAO(vao);
     bindVBO(vbo, vertices, verticesAmmount);
+	shader.useProgram();
+	
+	glUniform1f(glGetUniformLocation(shader.getID(), "ambientStrength"), 0.3f);
+	glUniform1f(glGetUniformLocation(shader.getID(), "highlightStrength"), 64.0f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "lightColor"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "objectColor"), 1.0f, 0.5f, 0.31f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "lightPos"), 1.2f, 1.0f, 2.0f); 
+	glUniform3f(glGetUniformLocation(shader.getID(), "viewPos"), 0.0f, 0.0f, 0.0f);
 	SetVertexAttributes( "pos", vertexSize, shader.getID());
 	SetColorAttributes("color", vertexSize, shader.getID());
+	SetNormalAttributes("aNormal", vertexSize, shader.getID()); 
+	
     startProgram(shader, model);
     glDrawElements(GL_TRIANGLES, vertexIndex, GL_UNSIGNED_INT, 0);
     unbindBuffers();

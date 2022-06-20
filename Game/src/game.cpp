@@ -25,21 +25,21 @@ void Game::Init() {
 	triangle->initShape();
 	triangle->SetPosition(.5f, .1f, -1.f);
 	triangle->SetScale(.5f, .5f, 1.f);
-	square2->setColor(0.0f, 1.0f, 1.0f);
+	square2->setColor(0.0f, -2.0f, 1.0f);
 
 	square2->initShape();
 	square2->SetPosition(1.0f, 0.5f, 0.0f);
 	square2->SetScale(0.4f, 0.4f, 0.5f);
-	square2->setColor(0.0f, 0.0f, 1.0f);
+	square2->setColor(-4.0f, 0.0f, 1.0f);
 
 	sprite1->init();
 	sprite1->SetPosition(.1f, .5f, -1.f);
 	sprite1->SetScale(.25f, .25f, 0.5f);
-	sprite1->setColor(1.0f, 1.0f, 1.0f);
+	sprite1->setColor(3.0f, 3.0f, 3.0f);
 
 	cube->initShape();
-	cube->SetPosition(2.1f, .5f, -1.f);
-	cube->SetScale(.5f, .5f, .50f);
+	cube->SetPosition(0.0f, 0.0f, -1.0f);
+	cube->SetScale(1.0f, 1.0f, 1.0f);
 
 
 }
@@ -53,11 +53,11 @@ void Game::Update() {
 
 	timer += time.getDeltaTime();
 
-	sprite1->SetPosition(camera->getPivot().position.x, camera->getPivot().position.y, camera->getPivot().position.z);
+	//sprite1->SetPosition(camera->getPivot().position.x, camera->getPivot().position.y, camera->getPivot().position.z);
 	//draw
-	triangle->draw();
-	square2->draw();
-	sprite1->draw();
+	//triangle->draw();
+	//square2->draw();
+	//sprite1->draw();
 	cube->draw();
 	//std::cout << "fps: " << time.getFPS() << "\n";
 }
