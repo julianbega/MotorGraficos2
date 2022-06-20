@@ -17,7 +17,7 @@ void Game::Init() {
 	lastX = window->getWidth() / 2;
 	lastY = window->getHeight() / 2;
 	triangle = new Shape(Type::tri, renderer, basicShader, "Triangle1");
-	cube = new Shape(Type::cube, renderer, basicShader, "Cube1");
+	cube = new Shape(Type::normalCube, renderer, basicShader, "Cube1");
 	square2 = new Shape(Type::quad, renderer, basicShader,"Square2");
 	sprite1 = new Sprite(true, "res/textures/granadeIcon.png", renderer, textureShader, "Sprite1");
 	player = new Sprite(true, "res/textures/PlayerShit.png", renderer, textureShader, "Player");
@@ -39,8 +39,7 @@ void Game::Init() {
 
 	cube->initShape();
 	cube->SetPosition(2.1f, .5f, -1.f);
-	cube->SetScale(.25f, .25f, 0.5f);
-	cube->setColor(1.0f, 1.0f, 1.0f);
+	cube->SetScale(.5f, .5f, .50f);
 
 
 }

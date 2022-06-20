@@ -91,7 +91,7 @@ void Shape::bindEBO() {
 		_renderer->bindEBO(_ebo, triangleIndices, 3);
 		break;
 	case Type::cube:
-		_renderer->bindEBO(_ebo, cubeIndices, 26);
+		_renderer->bindEBO(_ebo, cubeIndices, 36);
 		break;
 	case Type::normalCube:
 		_renderer->bindEBO(_ebo, cubeIndicesNormal, 36);
