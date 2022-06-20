@@ -155,24 +155,47 @@ void Shape::clearBuffers() {
 	_renderer->deleteBuffers(_vao, _vbo, _ebo);
 }
 
-void Shape::draw() {
+void Shape::draw(int parameterType) {
 	updateMatrices();
-	switch (shape)
+	if (parameterType == 0)
 	{
-	case Type::quad:
-		_renderer->draw(_shader, _vao, _vbo, quadVertices, 28, GetModel(), 6, 6);
-		break; 
-	case Type::tri:
-		_renderer->draw(_shader, _vao, _vbo, triangleVertices, 22, GetModel(), 6, 3);
-		break;
-	case Type::cube:
-		_renderer->draw(_shader, _vao, _vbo, cubeVertices, 52, GetModel(), 6, 36);
-		break;
-	case Type::normalCube:
-		_renderer->draw(_shader, _vao, _vbo, cubeVerticesNormal, 328, GetModel(), 9, 36);
-		break;
-	default:
-		break;
+		switch (shape)
+		{
+		case Type::quad:
+			_renderer->draw(_shader, _vao, _vbo, quadVertices, 28, GetModel(), 6, 6);
+			break; 
+		case Type::tri:
+			_renderer->draw(_shader, _vao, _vbo, triangleVertices, 22, GetModel(), 6, 3);
+			break;
+		case Type::cube:
+			_renderer->draw(_shader, _vao, _vbo, cubeVertices, 52, GetModel(), 6, 36);
+			break;
+		case Type::normalCube:
+			_renderer->draw(_shader, _vao, _vbo, cubeVerticesNormal, 328, GetModel(), 9, 36);
+			break;
+		default:
+			break;
+		}
+	}
+	else if (parameterType == 1)
+	{
+		switch (shape)
+		{
+		case Type::quad:
+			_renderer->drawMaterial(_shader, _vao, _vbo, quadVertices, 28, GetModel(), 6, 6);
+			break;
+		case Type::tri:
+			_renderer->drawMaterial(_shader, _vao, _vbo, triangleVertices, 22, GetModel(), 6, 3);
+			break;
+		case Type::cube:
+			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVertices, 52, GetModel(), 6, 36);
+			break;
+		case Type::normalCube:
+			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVerticesNormal, 328, GetModel(), 9, 36);
+			break;
+		default:
+			break;
+		}
 	}
 }
 

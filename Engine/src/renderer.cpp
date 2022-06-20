@@ -7,7 +7,7 @@
 
 
 Renderer::Renderer() {
-
+	
 }
 
 Renderer::~Renderer() {
@@ -38,13 +38,13 @@ void Renderer::SetColorAttributes(const char* name, int vertexSize, unsigned int
 	unsigned int attribute = glGetAttribLocation(shaderID, name);
 	createAtribPointers(attribute, 3, vertexSize, 3);
 }
-void Renderer::SetTextureAttributes(const char* name, int vertexSize, unsigned int shaderID) {
-	unsigned int attribute = glGetAttribLocation(shaderID, name);
-	createAtribPointers(attribute, 2, vertexSize, 9);
-}
 void Renderer::SetNormalAttributes(const char* name, int vertexSize, unsigned int shaderID) {
 	unsigned int attribute = glGetAttribLocation(shaderID, name);
 	createAtribPointers(attribute, 3, vertexSize, 6);
+}
+void Renderer::SetTextureAttributes(const char* name, int vertexSize, unsigned int shaderID) {
+	unsigned int attribute = glGetAttribLocation(shaderID, name);
+	createAtribPointers(attribute, 2, vertexSize, 9);
 }
 
 
@@ -115,11 +115,11 @@ void Renderer::draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float*
     bindVAO(vao);
     bindVBO(vbo, vertices, verticesAmmount);
 	shader.useProgram();
-	
+
+	glUniform1f(glGetUniformLocation(shader.getID(), "type"), 0.0f);
 	glUniform1f(glGetUniformLocation(shader.getID(), "ambientStrength"), 0.3f);
 	glUniform1f(glGetUniformLocation(shader.getID(), "highlightStrength"), 64.0f);
 	glUniform3f(glGetUniformLocation(shader.getID(), "lightColor"), 1.0f, 1.0f, 1.0f);
-	glUniform3f(glGetUniformLocation(shader.getID(), "objectColor"), 1.0f, 0.5f, 0.31f);
 	glUniform3f(glGetUniformLocation(shader.getID(), "lightPos"), 1.2f, 1.0f, 2.0f); 
 	glUniform3f(glGetUniformLocation(shader.getID(), "viewPos"), 0.0f, 0.0f, 0.0f);
 	SetVertexAttributes( "pos", vertexSize, shader.getID());
@@ -129,6 +129,30 @@ void Renderer::draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float*
     startProgram(shader, model);
     glDrawElements(GL_TRIANGLES, vertexIndex, GL_UNSIGNED_INT, 0);
     unbindBuffers();
+}
+
+void Renderer::drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex) {
+	bindVAO(vao);
+	bindVBO(vbo, vertices, verticesAmmount);
+	shader.useProgram(); 
+	glUniform1f(glGetUniformLocation(shader.getID(), "type"), 1.0f);
+	glUniform1f(glGetUniformLocation(shader.getID(), "ambientStrength"), 0.3f);
+	glUniform1f(glGetUniformLocation(shader.getID(), "highlightStrength"), 64.0f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "lightColor"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "lightPos"), 1.2f, 1.0f, 2.0f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "viewPos"), 0.0f, 0.0f, 0.0f);
+
+
+	glUniform3f(glGetUniformLocation(shader.getID(), "material.ambient"), 1.0f, 0.5f, 0.31f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "material.diffuse"), 1.0f, 0.5f, 0.31f);
+	glUniform3f(glGetUniformLocation(shader.getID(), "material.specular"), 0.5f, 0.5f, 0.5f);
+	glUniform1f(glGetUniformLocation(shader.getID(), "material.shininess"), 32.0f);
+	SetVertexAttributes("pos", vertexSize, shader.getID());
+	SetNormalAttributes("aNormal", vertexSize, shader.getID());
+
+	startProgram(shader, model);
+	glDrawElements(GL_TRIANGLES, vertexIndex, GL_UNSIGNED_INT, 0);
+	unbindBuffers();
 }
 
 void Renderer::drawSprite(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model){

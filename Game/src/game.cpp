@@ -5,19 +5,24 @@ Game::Game() : Gamebase(){
 }
 	
 Game::~Game() {
-	if (triangle) delete triangle;
+	/*if (triangle) delete triangle;
 	if (square2) delete square2;
 	if (sprite1) delete sprite1;
 	if (player) delete player;
-	if (idle) delete idle;
+	if (idle) delete idle;*/
+	if (cube) delete cube;
+	if (cube2) delete cube2;
 }
 
 	//initialization of game variables
 void Game::Init() {
 	lastX = window->getWidth() / 2;
 	lastY = window->getHeight() / 2;
-	triangle = new Shape(Type::tri, renderer, basicShader, "Triangle1");
 	cube = new Shape(Type::normalCube, renderer, basicShader, "Cube1");
+	cube2 = new Shape(Type::normalCube, renderer, basicShader, "CubeMat");
+
+	/*
+	triangle = new Shape(Type::tri, renderer, basicShader, "Triangle1");
 	square2 = new Shape(Type::quad, renderer, basicShader,"Square2");
 	sprite1 = new Sprite(true, "res/textures/granadeIcon.png", renderer, textureShader, "Sprite1");
 	player = new Sprite(true, "res/textures/PlayerShit.png", renderer, textureShader, "Player");
@@ -36,11 +41,14 @@ void Game::Init() {
 	sprite1->SetPosition(.1f, .5f, -1.f);
 	sprite1->SetScale(.25f, .25f, 0.5f);
 	sprite1->setColor(3.0f, 3.0f, 3.0f);
-
+	*/
 	cube->initShape();
 	cube->SetPosition(0.0f, 0.0f, -1.0f);
-	cube->SetScale(1.0f, 1.0f, 1.0f);
+	cube->SetScale(0.5f, 0.5f, 0.5f);
 
+	cube2->initShape();
+	cube2->SetPosition(1.0f, 0.0f, -1.0f);
+	cube2->SetScale(0.5f, 0.5f, 0.5f);
 
 }
 
@@ -58,7 +66,8 @@ void Game::Update() {
 	//triangle->draw();
 	//square2->draw();
 	//sprite1->draw();
-	cube->draw();
+	cube->draw(0);
+	cube2->draw(1);
 	//std::cout << "fps: " << time.getFPS() << "\n";
 }
 
@@ -72,7 +81,7 @@ void Game::Inputs() {
 	// free memory
 void Game::Unload() {
 	dataManager->clearLevelEntities();
-	if (triangle) {
+	/*if (triangle) {
 		delete triangle;
 		triangle = NULL;
 	}
@@ -91,8 +100,12 @@ void Game::Unload() {
 	if (idle) {
 		delete idle;
 		idle = NULL;
-	}
+	}*/
 	if (cube) {
+		delete cube;
+		cube = NULL;
+	}
+	if (cube2) {
 		delete cube;
 		cube = NULL;
 	}

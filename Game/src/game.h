@@ -3,12 +3,14 @@
 #include "gamebase.h"
 
 class Game : public Gamebase{
-	Shape* triangle;
+	/*Shape* triangle;
 	Shape* square2;
-	Shape* cube;
 	Sprite* sprite1;
 	Sprite* player;
-	Animation* idle;
+	Animation* idle;*/
+
+	Shape* cube;
+	Shape* cube2;
 	float timer = 0;
 	float speed = 1;
 	float rotationSpeed = 100;
