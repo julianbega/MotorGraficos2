@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="global_declarations.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\dataManager.h" />

@@ -6,6 +6,25 @@ in vec3 FragPos;
 
 out vec4 fragColor;
 
+struct Light {
+    vec3 direction;  
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct PointLight {
+    vec3 position;  
+  
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+	
+    float constant;
+    float linear;
+    float quadratic;
+};
+
 
 struct Material {
     vec3 ambient;
@@ -20,9 +39,10 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform float highlightStrength;
 uniform Material material;
-
-
 uniform float type;
+uniform Light light;
+uniform PointLight pointLight;
+
 vec3 result;
 vec3 norm;
 vec3 lightDir;
@@ -34,11 +54,13 @@ void main()
 
 	norm = normalize(Normal);
 	
-	lightDir = normalize(lightPos - FragPos);
-	diff = max(dot(norm, lightDir), 0.0);
-	
+	//lightDir = normalize(lightPos - FragPos);
+	lightDir = normalize(-light.direction);
+	diff = max(dot(norm, lightDir), 0.0);	
 	viewDir = normalize(viewPos - FragPos);
 	reflectDir = reflect(-lightDir, norm);
+	float distance = length(pointLight.position - FragPos);
+	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * (distance * distance)); 
 	if (type == 0)
 	{
 		vec3 ambient = ambientStrength * lightColor;
@@ -51,6 +73,9 @@ void main()
 		float spec = pow(max(dot(viewDir, reflectDir), 0.0), highlightStrength);
 		vec3 specular = specularStrength * spec * lightColor;
 
+		ambient  *= attenuation; 
+		diffuse  *= attenuation;
+		specular *= attenuation; 
 		result = (ambient + diffuse + specular) * customColor;		
 	}	
 	else if (type == 1)
@@ -61,7 +86,10 @@ void main()
 
 		float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 		vec3 specular = lightColor * (spec * material.specular);
-
+		
+		ambient  *= attenuation; 
+		diffuse  *= attenuation;
+		specular *= attenuation; 
 		result = ambient + diffuse + specular;
 		
 	}

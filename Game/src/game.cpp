@@ -12,6 +12,7 @@ Game::~Game() {
 	if (idle) delete idle;*/
 	if (cube) delete cube;
 	if (cube2) delete cube2;
+	if (cube3) delete cube3;
 }
 
 	//initialization of game variables
@@ -20,7 +21,19 @@ void Game::Init() {
 	lastY = window->getHeight() / 2;
 	cube = new Shape(Type::normalCube, renderer, basicShader, "Cube1");
 	cube2 = new Shape(Type::normalCube, renderer, basicShader, "CubeMat");
+	cube3 = new Shape(Type::normalCube, renderer, basicShader, "CubeMat2");
 
+	Material jade;
+	jade.ambient = vec3{ 1.0f, 0.5f, 0.31f };
+	jade.diffuse = vec3{ 1.0f, 0.5f, 0.31f };
+	jade.specular = vec3{ 0.5f, 0.5f, 0.5f };
+	jade.shininess = 32.0f;
+
+	Material mat2;
+	mat2.ambient = vec3{ 0.31f, 0.5f, 1.00f };
+	mat2.diffuse = vec3{ 0.31f, 0.5f, 1.00f };
+	mat2.specular = vec3{ 0.5f, 0.5f, 0.5f };
+	mat2.shininess = 32.0f;
 	/*
 	triangle = new Shape(Type::tri, renderer, basicShader, "Triangle1");
 	square2 = new Shape(Type::quad, renderer, basicShader,"Square2");
@@ -43,12 +56,22 @@ void Game::Init() {
 	sprite1->setColor(3.0f, 3.0f, 3.0f);
 	*/
 	cube->initShape();
-	cube->SetPosition(0.0f, 0.0f, -1.0f);
+	cube->SetPosition(0.0f, -0.5f, -1.0f);
 	cube->SetScale(0.5f, 0.5f, 0.5f);
+	cube->SetZRot(0.5f);
+	cube->setColor(0.0f, 0.0f, 0.0f);
 
 	cube2->initShape();
-	cube2->SetPosition(1.0f, 0.0f, -1.0f);
+	cube2->SetPosition(10.0f, -0.5f, -1.0f);
 	cube2->SetScale(0.5f, 0.5f, 0.5f);
+	cube2->SetYRot(0.5f);
+	cube2->setMaterial(jade);
+
+	cube3->initShape();
+	cube3->SetPosition(-10.0f, -0.5f, -1.0f);
+	cube3->SetScale(0.5f, 0.5f, 0.5f);
+	cube3->SetXRot(0.5f);
+	cube3->setMaterial(mat2);
 
 }
 
@@ -66,8 +89,9 @@ void Game::Update() {
 	//triangle->draw();
 	//square2->draw();
 	//sprite1->draw();
-	cube->draw(0);
-	cube2->draw(1);
+	cube->draw();
+	cube2->draw();
+	cube3->draw();
 	//std::cout << "fps: " << time.getFPS() << "\n";
 }
 
@@ -106,6 +130,10 @@ void Game::Unload() {
 		cube = NULL;
 	}
 	if (cube2) {
+		delete cube;
+		cube = NULL;
+	}
+	if (cube3) {
 		delete cube;
 		cube = NULL;
 	}

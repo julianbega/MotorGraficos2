@@ -3,6 +3,7 @@
 
 #include "renderer.h"
 
+
 #include "gtc/type_ptr.hpp"
 
 
@@ -131,7 +132,7 @@ void Renderer::draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float*
     unbindBuffers();
 }
 
-void Renderer::drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex) {
+void Renderer::drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex, Material mat) {
 	bindVAO(vao);
 	bindVBO(vbo, vertices, verticesAmmount);
 	shader.useProgram(); 
@@ -142,11 +143,20 @@ void Renderer::drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo
 	glUniform3f(glGetUniformLocation(shader.getID(), "lightPos"), 1.2f, 1.0f, 2.0f);
 	glUniform3f(glGetUniformLocation(shader.getID(), "viewPos"), 0.0f, 0.0f, 0.0f);
 
+	//std::cout << "Renderer, diffuse x:" << mat.diffuse.x << " Ambient y: " << mat.diffuse.y << " Ambient z: " << mat.diffuse.z << std::endl;
+	
+	glUniform3f(glGetUniformLocation(shader.getID(), "material.ambient"), mat.ambient.x, mat.ambient.y, mat.ambient.z);
+	glUniform3f(glGetUniformLocation(shader.getID(), "material.diffuse"), mat.diffuse.x, mat.diffuse.y, mat.diffuse.z);
+	glUniform3f(glGetUniformLocation(shader.getID(), "material.specular"), mat.specular.x, mat.specular.y, mat.specular.z);
+	glUniform1f(glGetUniformLocation(shader.getID(), "material.shininess"), mat.shininess);
 
-	glUniform3f(glGetUniformLocation(shader.getID(), "material.ambient"), 1.0f, 0.5f, 0.31f);
-	glUniform3f(glGetUniformLocation(shader.getID(), "material.diffuse"), 1.0f, 0.5f, 0.31f);
-	glUniform3f(glGetUniformLocation(shader.getID(), "material.specular"), 0.5f, 0.5f, 0.5f);
-	glUniform1f(glGetUniformLocation(shader.getID(), "material.shininess"), 32.0f);
+	
+
+	glUniform1f(glGetUniformLocation(shader.getID(), "pointLight.constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(shader.getID(), "pointLight.linear"), 0.09f);
+	glUniform1f(glGetUniformLocation(shader.getID(), "pointLight.quadratic"), 0.032f);
+
+	glUniform3f(glGetUniformLocation(shader.getID(), "light.direction"), -1.0f, -2.0f, -0.5f);
 	SetVertexAttributes("pos", vertexSize, shader.getID());
 	SetNormalAttributes("aNormal", vertexSize, shader.getID());
 

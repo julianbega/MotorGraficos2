@@ -127,6 +127,7 @@ void Shape::bindBuffers(float* quadVertex, float* triVertex, int quadVertexSize,
 }
 
 void Shape::setColor(float r, float g, float b) {
+	parameterType = 0;
 	switch (shape)
 	{
 	case Type::quad:
@@ -155,7 +156,25 @@ void Shape::clearBuffers() {
 	_renderer->deleteBuffers(_vao, _vbo, _ebo);
 }
 
-void Shape::draw(int parameterType) {
+void Shape::setMaterial(vec3 ambient, vec3 diffuse, vec3 specular, float shininess)
+{
+	parameterType = 1;
+	_material.ambient = ambient;
+	_material.diffuse = diffuse;
+	_material.specular = specular;
+	_material.shininess = shininess;
+}
+
+void Shape::setMaterial(Material mat)
+{
+	parameterType = 1;
+	_material.ambient = mat.ambient;
+	_material.diffuse = mat.diffuse;
+	_material.specular = mat.specular;
+	_material.shininess = mat.shininess;
+}
+
+void Shape::draw() {
 	updateMatrices();
 	if (parameterType == 0)
 	{
@@ -182,16 +201,16 @@ void Shape::draw(int parameterType) {
 		switch (shape)
 		{
 		case Type::quad:
-			_renderer->drawMaterial(_shader, _vao, _vbo, quadVertices, 28, GetModel(), 6, 6);
+			_renderer->drawMaterial(_shader, _vao, _vbo, quadVertices, 28, GetModel(), 6, 6, _material);
 			break;
 		case Type::tri:
-			_renderer->drawMaterial(_shader, _vao, _vbo, triangleVertices, 22, GetModel(), 6, 3);
+			_renderer->drawMaterial(_shader, _vao, _vbo, triangleVertices, 22, GetModel(), 6, 3, _material);
 			break;
 		case Type::cube:
-			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVertices, 52, GetModel(), 6, 36);
+			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVertices, 52, GetModel(), 6, 36, _material);
 			break;
 		case Type::normalCube:
-			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVerticesNormal, 328, GetModel(), 9, 36);
+			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVerticesNormal, 328, GetModel(), 9, 36, _material);
 			break;
 		default:
 			break;

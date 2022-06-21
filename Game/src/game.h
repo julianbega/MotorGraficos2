@@ -11,6 +11,7 @@ class Game : public Gamebase{
 
 	Shape* cube;
 	Shape* cube2;
+	Shape* cube3;
 	float timer = 0;
 	float speed = 1;
 	float rotationSpeed = 100;

@@ -3,6 +3,7 @@
 #include "export.h"
 #include "shader.h"
 #include "mat4x4.hpp"
+#include "global_declarations.h"
 
 class ENGINE_API Renderer {
 public:
@@ -29,7 +30,7 @@ public:
 	void bindAllBuffersAtOnce(unsigned int& vbo, unsigned int& vao, unsigned int& ebo, float* vertex, unsigned int* indices, int verticesAmmount, int indicesAmmount); // binds verteces to the vbo and vao
 
 	void draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex);
-	void drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex);
+	void drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex, Material mat);
 	void drawCube(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model);
 	void drawSprite(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model);
 	void drawCamera(Shader& shader, glm::mat4 model, glm::mat4 view, glm::mat4 proj);

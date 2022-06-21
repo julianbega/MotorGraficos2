@@ -4,11 +4,13 @@
 #include "renderer.h"
 #include "entity.h"
 #include "dataManager.h"
+#include "global_declarations.h"
 
 
 enum class ENGINE_API Type {
     quad, tri, cube, normalCube
 };
+
 
 class ENGINE_API Shape : public Entity{
     unsigned int _vao;
@@ -33,7 +35,6 @@ class ENGINE_API Shape : public Entity{
     unsigned int triangleIndices[3] = {
         0, 1, 2
     };
-
 	float cubeVertices[48] = {
 			-1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 			 1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -44,7 +45,6 @@ class ENGINE_API Shape : public Entity{
 			 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
 			-1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f
 	};
-
 	float cubeVerticesNormal[324] = {
 			-0.5f, -0.5f, -0.5f,  0.0f, 0.25f, 0.0f,  0.0f, 0.0f, -1.0f,//0
 			 0.5f, -0.5f, -0.5f,  0.0f, 0.25f, 0.0f,  0.0f, 0.0f, -1.0f,//1
@@ -88,7 +88,6 @@ class ENGINE_API Shape : public Entity{
 			-0.5f,  0.5f,  0.5f,  0.0f, 0.25f, 0.0f, 0.0f,  1.0f,  0.0f,//34
 			-0.5f,  0.5f, -0.5f,  0.0f, 0.25f, 0.0f, 0.0f,  1.0f,  0.0f//35
 	};
-
 	unsigned int cubeIndices[36] = {
 			0,1,2,
 			2,3,0,
@@ -103,7 +102,6 @@ class ENGINE_API Shape : public Entity{
 			3,2,6,
 			6,7,3
 	};
-
 	unsigned int cubeIndicesNormal[36] = {
 			0,1,2,
 			3,4,5,
@@ -121,7 +119,8 @@ class ENGINE_API Shape : public Entity{
 
     Type shape;
     Shader _shader;
-
+	Material _material;
+	float parameterType;
     void generateVAO();
 
     void bindVAO();
@@ -141,8 +140,10 @@ public:
     void initShape();
 
     void setColor(float r, float g, float b);
+	void setMaterial(vec3 ambient, vec3 diffuse, vec3 specular, float shininess);
+	void setMaterial(Material mat);
 
-    void draw(int parameterType);
+    void draw();
 };
 
 
