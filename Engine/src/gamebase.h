@@ -15,6 +15,7 @@
 #include "dataManager.h"
 #include "time_manager.h"
 #include "player.h"
+#include "cube.h"
 
 
 class Renderer;

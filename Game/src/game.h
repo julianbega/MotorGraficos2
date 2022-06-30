@@ -1,23 +1,14 @@
 #ifndef GAME_H
 #define GAME_H
 #include "gamebase.h"
+#include "glm.hpp"
 
 class Game : public Gamebase{
-	/*Shape* triangle;
-	Shape* square2;
-	Sprite* sprite1;
-	Sprite* player;
-	Animation* idle;*/
 
-	Shape* cube;
-	Shape* cube2;
-	Shape* cube3;
 	float timer = 0;
 	float speed = 1;
 	float rotationSpeed = 100;
-
-	//Player p1;
-		
+	Cube* cube;
 	float lastX;
 	float lastY;
 	bool firstMouse = true;

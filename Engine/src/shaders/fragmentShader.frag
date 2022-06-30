@@ -3,28 +3,26 @@
 in vec3 customColor;
 in vec3 Normal;
 in vec3 FragPos; 
+in vec2 texCoord;
+
 
 out vec4 fragColor;
 
 struct Light {
-    vec3 direction;  
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-};
 
-struct PointLight {
     vec3 position;  
-  
+    vec3 direction;  
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
-	
+		
     float constant;
     float linear;
     float quadratic;
+	
+    float cutOff;
 };
-
 
 struct Material {
     vec3 ambient;
@@ -41,7 +39,6 @@ uniform float highlightStrength;
 uniform Material material;
 uniform float type;
 uniform Light light;
-uniform PointLight pointLight;
 
 vec3 result;
 vec3 norm;
@@ -59,8 +56,8 @@ void main()
 	diff = max(dot(norm, lightDir), 0.0);	
 	viewDir = normalize(viewPos - FragPos);
 	reflectDir = reflect(-lightDir, norm);
-	float distance = length(pointLight.position - FragPos);
-	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * (distance * distance)); 
+	float distance = length(light.position - FragPos);
+	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance)); 
 	if (type == 0)
 	{
 		vec3 ambient = ambientStrength * lightColor;

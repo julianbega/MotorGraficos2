@@ -53,7 +53,6 @@ void Sprite::init(){
 	LoadSprite();
 	_renderer->setUVAttribPointer(_shader.getID());
 	bindBuffers();
-
 }
 
 void Sprite::LoadSprite() {
@@ -61,7 +60,6 @@ void Sprite::LoadSprite() {
 		texImporter->LoadImage(_width, _height, _transparency);
 	else
 		std::cout << "Couldn't find image" << std::endl;
-
 }
 
 void Sprite::LoadSprite(int width, int height) {

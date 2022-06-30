@@ -22,6 +22,7 @@
     <ClInclude Include="global_declarations.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\cube.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\export.h" />
@@ -39,6 +40,7 @@
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\inspector.h" />
     <ClInclude Include="src\light.h" />
+    <ClInclude Include="src\materials.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\shader.h" />
@@ -53,6 +55,7 @@
   <ItemGroup>
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\cube.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\gamebase.cpp" />

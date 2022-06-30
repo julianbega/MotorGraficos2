@@ -126,6 +126,12 @@
     <ClInclude Include="global_declarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\materials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gamebase.cpp">
@@ -198,6 +204,9 @@
       <Filter>Source Files\Cameras</Filter>
     </ClCompile>
     <ClCompile Include="src\light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

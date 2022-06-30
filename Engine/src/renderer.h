@@ -5,8 +5,11 @@
 #include "mat4x4.hpp"
 #include "global_declarations.h"
 
+struct Material;
+
 class ENGINE_API Renderer {
 public:
+
 	Renderer();
 	~Renderer();
 	//							layout / index of attribute    ammount of data in a vertex (xyz = 3/ uv = 2)
@@ -24,16 +27,19 @@ public:
 	void startProgram(Shader &shader, glm::mat4 model);
 
 	void generateVAO(unsigned int& vao);
+	void generateVBO(unsigned int& vbo);
 	void bindVAO(unsigned int& vao);
 	void bindVBO(unsigned int& vbo, float* vertices, int verticesAmmount);
 	void bindEBO(unsigned int& ebo, unsigned int* indices, int indicesAmmount);
 	void bindAllBuffersAtOnce(unsigned int& vbo, unsigned int& vao, unsigned int& ebo, float* vertex, unsigned int* indices, int verticesAmmount, int indicesAmmount); // binds verteces to the vbo and vao
 
 	void draw(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex);
-	void drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex, Material mat);
+	void drawMaterial(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model, int vertexSize, int vertexIndex);
 	void drawCube(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model);
 	void drawSprite(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model);
 	void drawCamera(Shader& shader, glm::mat4 model, glm::mat4 view, glm::mat4 proj);
+
+	void setCubeAttribPointer(Shader& shader);
 
 	void activateWireframeMode();
 	void deactivateWireframeMode();

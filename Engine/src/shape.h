@@ -119,7 +119,7 @@ class ENGINE_API Shape : public Entity{
 
     Type shape;
     Shader _shader;
-	Material _material;
+	//Material _material;
 	float parameterType;
     void generateVAO();
 
@@ -140,8 +140,8 @@ public:
     void initShape();
 
     void setColor(float r, float g, float b);
-	void setMaterial(vec3 ambient, vec3 diffuse, vec3 specular, float shininess);
-	void setMaterial(Material mat);
+	//void setMaterial(vec3 ambient, vec3 diffuse, vec3 specular, float shininess);
+	//void setMaterial(Material mat);
 
     void draw();
 };

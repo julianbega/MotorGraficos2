@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <sstream> // to read and write strings in files
+#include "gtc/type_ptr.hpp"
 
 Shader::Shader() {
 	_id = 0;
@@ -89,4 +90,48 @@ unsigned int Shader::compileShader(unsigned int type, std::string& source) {
 		return 0;
 	}
 	return shaderID;
+}
+
+void Shader::setInt(const char* name, int value)
+{
+	GLint attribLocation = glGetUniformLocation(_id, name);
+	glProgramUniform1i(_id, attribLocation, value);
+}
+
+void Shader::setFloat(const char* name, float value)
+{
+	GLint attribLocation = glGetUniformLocation(_id, name);
+	// glUniform1f is deprecated
+	glProgramUniform1f(_id, attribLocation, value);
+}
+
+void Shader::setVec3(const char* name, float x, float y, float z)
+{
+	glm::vec3 value = glm::vec3(x, y, z);
+	GLint attribLocation = glGetUniformLocation(_id, name);
+	glProgramUniform3fv(_id, attribLocation, 1, glm::value_ptr(value));
+}
+
+void Shader::setVec3(const char* name, glm::vec3 value)
+{
+	GLint attribLocation = glGetUniformLocation(_id, name);
+	glProgramUniform3fv(_id, attribLocation, 1, glm::value_ptr(value));
+}
+
+void Shader::setMat4(const char* name, glm::mat4 value)
+{
+	GLint attribLocation = glGetUniformLocation(_id, name);
+	glUniformMatrix4fv(attribLocation, 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::setAttribute(const char* name, int dataAmount, int dataSize, int dataPosition)
+{
+	unsigned int attrib = glGetAttribLocation(_id, name);
+	glVertexAttribPointer(attrib, dataAmount, GL_FLOAT, GL_FALSE, sizeof(float) * dataSize, (void*)(sizeof(float) * dataPosition));
+	glEnableVertexAttribArray(attrib);
+}
+
+void Shader::setSampler2D(const char* name)
+{
+	glUniform1i((glGetUniformLocation(_id, name)), 0);
 }
