@@ -5,7 +5,7 @@
 #include "ext/scalar_constants.hpp"
 #include "dataManager.h"
 
-int Entity::_nextEntityID = 0;
+int Entity::nextEntityID = 0;
 
 void Entity::updateModel() {
 	model.trs = model.translate * model.rotation.x * model.rotation.y * model.rotation.z * model.scale;
@@ -27,11 +27,11 @@ Entity::Entity(Renderer* renderer) {
 	SetYRot(0.0f);
 	SetZRot(0.0f);
 
-	_id = _nextEntityID++; // assign id and then increase the value so the next entity doesn´t share the same one
+	id = nextEntityID++; // assign id and then increase the value so the next entity doesn´t share the same one
 
-	_forward = glm::vec3(0, 0, -1);
-	_up = glm::vec3(0, 1, 0);
-	_right = glm::vec3(1, 0, 0);
+	forward = glm::vec3(0, 0, -1);
+	up = glm::vec3(0, 1, 0);
+	right = glm::vec3(1, 0, 0);
 
 }
 
@@ -105,29 +105,29 @@ void Entity::SetScale(float x, float y, float z) {
 }
 
 void Entity::SetID(int id) {
-	_id = id;
+	id = id;
 }
 
 int Entity::GetID() {
-	return _id;
+	return id;
 }
 
-void Entity::SetName(std::string name) {
-	_name = name;
+void Entity::SetName(std::string entityName) {
+	name = entityName;
 }
 
 std::string Entity::GetName() {
-	return _name;
+	return name;
 }
 
 void Entity::updateVectors(glm::vec3 worldUp)
 {
-	this->_forward.x = glm::cos(glm::radians(this->transform.rotation.y)) * glm::cos(glm::radians(this->transform.rotation.x));
-	this->_forward.y = glm::sin(glm::radians(this->transform.rotation.x));
-	this->_forward.z = glm::sin(glm::radians(this->transform.rotation.y)) * glm::cos(glm::radians(this->transform.rotation.x));
-	this->_forward = glm::normalize(this->_forward);
-	this->_right = glm::normalize(glm::cross(this->_forward, worldUp));
-	this->_up = glm::normalize(glm::cross(this->_right, this->_forward));
+	this->forward.x = glm::cos(glm::radians(this->transform.rotation.y)) * glm::cos(glm::radians(this->transform.rotation.x));
+	this->forward.y = glm::sin(glm::radians(this->transform.rotation.x));
+	this->forward.z = glm::sin(glm::radians(this->transform.rotation.y)) * glm::cos(glm::radians(this->transform.rotation.x));
+	this->forward = glm::normalize(this->forward);
+	this->right = glm::normalize(glm::cross(this->forward, worldUp));
+	this->up = glm::normalize(glm::cross(this->right, this->forward));
 
 	//limita rotacion de pitch
 	if (this->transform.rotation.x >= 89.9f) this->transform.rotation.x = 89.9f;
@@ -136,11 +136,11 @@ void Entity::updateVectors(glm::vec3 worldUp)
 
 
 glm::vec3 Entity::getForward() {
-	return _forward;
+	return forward;
 }
 glm::vec3 Entity::getUp() {
-	return _up;
+	return up;
 }
 glm::vec3 Entity::getRight() {
-	return _right;
+	return right;
 }

@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\fragmentShader.frag" />
+    <None Include="src\shaders\fragmentShader2.frag" />
     <None Include="src\shaders\fragmentShaderLights.frag" />
     <None Include="src\shaders\texFragmentShader.frag" />
     <None Include="src\shaders\vertexShader.vert" />

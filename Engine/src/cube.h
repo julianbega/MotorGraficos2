@@ -80,9 +80,9 @@ class ENGINE_API Cube : public Entity {
 	void clearBuffers();
 
 public:
-	Cube(Renderer* renderer, Shader& shader, std::string name);
-	Cube(Renderer* renderer, Shader& shader, std::string name, bool transparency);
-	Cube(Renderer* renderer, Shader& shader, std::string name, const char* path, bool transparency);
+	Cube(Renderer* renderer, Shader& shader, std::string cubesName);
+	Cube(Renderer* renderer, Shader& shader, std::string cubesName, bool transparency);
+	Cube(Renderer* renderer, Shader& shader, std::string cubesName, const char* path, bool transparency);
 	Cube(Renderer* renderer);
 	~Cube();
 

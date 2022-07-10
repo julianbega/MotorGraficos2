@@ -59,8 +59,8 @@ class ENGINE_API Sprite : public Entity {
 	void clearBuffers();
 public:
 
-	Sprite(bool transparency, Renderer* renderer, Shader& shader, std::string name);
-	Sprite(bool transparency, const char* path, Renderer* renderer, Shader& shader, std::string name);
+	Sprite(bool transparency, Renderer* renderer, Shader& shader, std::string spriteName);
+	Sprite(bool transparency, const char* path, Renderer* renderer, Shader& shader, std::string spriteName);
 	~Sprite();
 
 	void init();

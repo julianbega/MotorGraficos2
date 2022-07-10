@@ -15,12 +15,12 @@ Camera::Camera(Window* window, Renderer* renderer, ProjectionType type, CameraTy
 	_window = window;
 	_view = glm::mat4(1.0f);
 	_proj = glm::mat4(1.0f);
-	_name = "Camera";
+	name = "Camera";
 	_type = type;
 	_worldUp = glm::vec3(0, 1, 0);	
 	_camTytpe = camTytpe;
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 	_pivot->transform = this->transform;
 	
 }
@@ -30,7 +30,7 @@ Camera::~Camera() {
 }
 
 void Camera::updateView() {
-	_view = glm::lookAt(transform.position, transform.position +  _forward, _up);
+	_view = glm::lookAt(transform.position, transform.position +  forward, up);
 }
 
 void Camera::setProjection(ProjectionType type) {

@@ -1,27 +1,25 @@
 #version 330 core
 
-in vec3 pos;
-in vec3 color;
-in vec4 texColor;
-in vec2 aTexCoord;
-in vec3 aNormal;
+layout(location=0) in vec3 inPosition; 
+layout(location=1) in vec3 inColor;
+layout(location=2) in vec3 inNormal;
+layout(location=3) in vec2 inTexCoord;
 
-out vec3 customColor;
-out vec4 textureColor;
+out vec3 position;
+out vec3 color;
+out vec3 normal;
 out vec2 texCoord;
-out vec3 Normal;
-out vec3 FragPos;
+
 
 uniform mat4 transform;
 uniform mat4 view;
 uniform mat4 proj;
 
-void main() 
+void main()
 {
-	customColor = color;
-	textureColor = texColor;
-	texCoord = aTexCoord;
-	gl_Position = proj * view * transform * vec4(pos, 1.0);
-	Normal = mat3(transpose(inverse(transform))) * aNormal;
-    FragPos = vec3(transform * vec4(pos, 1.0));
+	position = vec3(transform * vec4(inPosition, 1.0));
+	color = inColor;
+	normal = mat3(transpose(inverse(transform))) * inNormal;
+	texCoord = inTexCoord;
+	gl_Position = proj * view * transform * vec4(inPosition, 1.0);
 }

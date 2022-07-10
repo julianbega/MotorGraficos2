@@ -8,7 +8,12 @@ class Game : public Gamebase{
 	float timer = 0;
 	float speed = 1;
 	float rotationSpeed = 100;
+
 	Cube* cube;
+	Light* directional;
+	Light* spot;
+	Light* point;
+
 	float lastX;
 	float lastY;
 	bool firstMouse = true;

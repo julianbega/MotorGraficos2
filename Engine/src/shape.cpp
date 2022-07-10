@@ -2,15 +2,15 @@
 
 #include <stdlib.h>
 
-Shape::Shape(Type type, Renderer* renderer, Shader &shader, std::string name) : Entity(renderer){
+Shape::Shape(Type type, Renderer* renderer, Shader &shader, std::string shapeName) : Entity(renderer){
 	shape = type;
-	_name = name;
+	name = shapeName;
 	_shader = shader;
 	_vao = 0;
 	_vbo = 0;
 	_ebo = 0;
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 }
 	
 Shape::~Shape() {

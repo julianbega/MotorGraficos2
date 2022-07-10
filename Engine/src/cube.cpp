@@ -57,34 +57,34 @@ void Cube::clearBuffers()
 	_renderer->deleteBuffers(_vao, _vbo, _ebo);
 }
 
-Cube::Cube(Renderer* renderer, Shader& shader, std::string name) : Entity(renderer)
+Cube::Cube(Renderer* renderer, Shader& shader, std::string cubesName) : Entity(renderer)
 {
 	_transparency = true;
 	_texImporter = new TextureImporter();
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	_name = name;
+	name = cubesName;
 	_hasTexture = false;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 }
 
-Cube::Cube(Renderer* renderer, Shader& shader, std::string name, bool transparency) : Entity(renderer)
+Cube::Cube(Renderer* renderer, Shader& shader, std::string cubesName, bool transparency) : Entity(renderer)
 {
 	_transparency = transparency;
 	_texImporter = new TextureImporter();
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	_name = name;
+	name = cubesName;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 }
 
-Cube::Cube(Renderer* renderer, Shader& shader, std::string name, const char* path, bool transparency) : Entity(renderer)
+Cube::Cube(Renderer* renderer, Shader& shader, std::string cubesName, const char* path, bool transparency) : Entity(renderer)
 {
 	_transparency = transparency;
 	_texImporter = new TextureImporter();
@@ -92,10 +92,10 @@ Cube::Cube(Renderer* renderer, Shader& shader, std::string name, const char* pat
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	_name = name;
+	name = cubesName;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 }
 
 Cube::Cube(Renderer* renderer) : Entity(renderer)
@@ -104,10 +104,10 @@ Cube::Cube(Renderer* renderer) : Entity(renderer)
 	_texImporter = new TextureImporter();
 	_width = 0;
 	_height = 0;
-	_name = "cube_" + _id;
+	name = "cube_" + id;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 }
 
 Cube::~Cube()

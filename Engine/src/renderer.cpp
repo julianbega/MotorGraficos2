@@ -182,17 +182,19 @@ void Renderer::drawCube(Shader& shader, unsigned int& vao, unsigned int& vbo, fl
 	bindVBO(vbo, vertices, verticesAmmount);
 	setCubeAttribPointer(shader);
 	startProgram(shader, model);
-
-	glUniform1f(glGetUniformLocation(shader.getID(), "light.constant"), 1.0f);
-	glUniform1f(glGetUniformLocation(shader.getID(), "light.linear"), 0.09f);
-	glUniform1f(glGetUniformLocation(shader.getID(), "light.quadratic"), 0.032f);
-
-	glUniform3f(glGetUniformLocation(shader.getID(), "light.position"), 0.0f, 0.0f, 0.0f);
-	glUniform3f(glGetUniformLocation(shader.getID(), "light.direction"), 0.0f, 1.0f, 0.0f);
-	glUniform1f(glGetUniformLocation(shader.getID(), "light.cutOff"), glm::cos(glm::radians(12.5f)));
+	/*
+	TODO Falta agregar al draw la info de donde llega esta info, para eso probablemente tenga que hacer las clases de luces
+	uniform DirectionalLight directionalLight;
+	#define MAX_LIGHTS 4
+	uniform PointLight pointLight[MAX_LIGHTS];
+	uniform SpotLight spotLight[MAX_LIGHTS];
 
 
-	glUniform3f(glGetUniformLocation(shader.getID(), "light.direction"), -1.0f, -2.0f, -0.5f);
+	uniform vec3 viewPos;
+
+	uniform float specularStrength = 0.5f;
+	
+	*/
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	unbindBuffers();

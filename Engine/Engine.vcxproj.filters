@@ -226,5 +226,8 @@
     <None Include="src\shaders\fragmentShaderLights.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="src\shaders\fragmentShader2.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

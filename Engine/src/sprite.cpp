@@ -4,14 +4,14 @@
 #include "sprite.h"
 #include "dataManager.h"
 
-Sprite::Sprite(bool transparency, Renderer* renderer, Shader& shader, std::string name) : Entity(renderer)
+Sprite::Sprite(bool transparency, Renderer* renderer, Shader& shader, std::string spriteName) : Entity(renderer)
 {
 	_transparency = transparency;
 	texImporter = new TextureImporter();
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	_name = name;
+	name = spriteName;
 
 	uv[0].u = 0.0f; uv[0].v = 0.0f;
 	uv[1].u = 0.0f; uv[1].v = 0;
@@ -20,23 +20,23 @@ Sprite::Sprite(bool transparency, Renderer* renderer, Shader& shader, std::strin
 
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 }
 
-Sprite::Sprite(bool transparency, const char* path, Renderer* renderer, Shader& shader, std::string name) : Entity(renderer)
+Sprite::Sprite(bool transparency, const char* path, Renderer* renderer, Shader& shader, std::string spriteName) : Entity(renderer)
 {
 	_transparency = transparency;
 	texImporter = new TextureImporter();
 	texImporter->SetPath(path);
 	_shader = shader;
-	_name = name;
+	name = spriteName;
 
 
 	_width = 0;
 	_height = 0;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+	data->addEntity(this, id);
 }
 
 Sprite::~Sprite()

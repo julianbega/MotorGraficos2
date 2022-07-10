@@ -134,7 +134,7 @@ class ENGINE_API Shape : public Entity{
 
 public:
 
-    Shape(Type type, Renderer* renderer, Shader& shader, std::string name);
+    Shape(Type type, Renderer* renderer, Shader& shader, std::string shapeName);
     ~Shape();
 
     void initShape();
