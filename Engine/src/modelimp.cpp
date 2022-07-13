@@ -75,14 +75,13 @@ void ModelImp::LoadModel(std::string path) {
 		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
         return;
     }
-    _directory = path.substr(0, path.find_last_of('/'));
+    _directory = path.substr(0, path.find_last_of('/')); // se guarda el directory para la carga de texturas
 
     if(scene)
         ProcessNode(scene->mRootNode, scene);
 }
 
 void ModelImp::ProcessNode(aiNode* node, const aiScene* scene) {
-    std::cout << "Entro en ProcessNode!!!" << std::endl;
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         _meshes.push_back(ProcessMesh(mesh, scene));
@@ -156,7 +155,6 @@ Mesh ModelImp::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
     std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-    std::cout << "Entro en ProcessMesh!!!" << std::endl;
 
     return Mesh(vertices, indices, textures, _shader);
 }
@@ -187,9 +185,7 @@ std::vector<Texture> ModelImp::LoadMaterialTextures(aiMaterial* mat, aiTextureTy
             _textures_loaded.push_back(texture);
         }
     }
-
-    std::cout << "Entro en LoadMaterialTextures!!!" << std::endl;
-
+	
     return textures;
 }
 
