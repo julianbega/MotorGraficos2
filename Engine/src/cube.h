@@ -80,9 +80,9 @@ class ENGINE_API Cube : public Entity {
 	void clearBuffers();
 
 public:
-	Cube(Renderer* renderer, Shader& shader, std::string cubesName);
-	Cube(Renderer* renderer, Shader& shader, std::string cubesName, bool transparency);
-	Cube(Renderer* renderer, Shader& shader, std::string cubesName, const char* path, bool transparency);
+	Cube(Renderer* renderer, Shader& shader, std::string name);
+	Cube(Renderer* renderer, Shader& shader, std::string name, bool transparency);
+	Cube(Renderer* renderer, Shader& shader, std::string name, const char* path, bool transparency);
 	Cube(Renderer* renderer);
 	~Cube();
 
@@ -105,7 +105,13 @@ public:
 	inline const char* getPath() { return _texImporter ? _texImporter->GetPath() : "No path has been added"; }
 
 
+	// Inherited via Entity
+	void setColor(glm::vec3 color);
+
+	void setColor(float r, float g, float b);
+
 };
 
 
 #endif // !CUBE_H
+

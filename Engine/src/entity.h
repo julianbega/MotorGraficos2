@@ -21,22 +21,28 @@ struct ENGINE_API Model {
 struct ENGINE_API Transform {
 	glm::vec3 position;
 	glm::vec3 rotation;
-	glm::vec3 scale;	
+	glm::vec3 scale;
+	glm::vec3 forward;
+	glm::vec3 up;
+	glm::vec3 right;
 };
 
 //basic enitity for now
 class ENGINE_API Entity {
 protected:
-	int id;
-	static int nextEntityID;
-	std::string name = "";
+	int _id;
+	static int _nextEntityID;
+	std::string _name = "";
 	Renderer* _renderer;
 	Model model;
-	bool isLightSource = false;
-	bool shouldDraw = true;
+	bool _isLightSource = false;
+	Shader _entityShader;
 
 	void updateModel();
 	void updateMatrices();
+	void updateUp();
+	void updateRight();
+	void updateForward();
 public:
 	Entity(Renderer* renderer);
 	~Entity();
@@ -50,17 +56,16 @@ public:
 	void SetScale(float x, float y, float z);
 	void SetID(int id);
 	int GetID();
-	void SetName(std::string entityName);
+	void SetName(std::string name);
+	void setEntityColor(glm::vec3 color);
+	void setColor(glm::vec3 color);
+	void setColor(float r, float g, float b);
+	void updateVectors();
+
 	std::string GetName();
-	void updateVectors(glm::vec3 worldUp);
-	glm::vec3 getForward();
-	glm::vec3 getUp();
-	glm::vec3 getRight();
-	glm::vec3 forward;
-	glm::vec3 right;
-	glm::vec3 up;
-	bool active = true;
-	inline virtual void show(bool value) { shouldDraw = value; }
+	inline virtual glm::vec3 getColor() const { return glm::vec3(1); };
+	inline bool IsLightSource() { return _isLightSource; }
+	inline Shader GetShader() { return _entityShader; }
 };
 
 #endif // !ENTITY_H

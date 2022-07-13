@@ -1,11 +1,11 @@
 #include "GL/glew.h"
-#include "GLFW/glfw3.h"
 
 #include "shader.h"
 
 #include <fstream>
 #include <sstream> // to read and write strings in files
-#include "gtc/type_ptr.hpp"
+#include <glm.hpp>
+#include	"gtc/type_ptr.hpp"
 
 Shader::Shader() {
 	_id = 0;

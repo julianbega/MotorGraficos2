@@ -10,19 +10,17 @@
 #include "window.h"
 
 
-Camera::Camera(Window* window, Renderer* renderer, ProjectionType type, CameraType camTytpe) : Entity(renderer) {
-	_pivot = new Entity(renderer);
+Camera::Camera(Window* window, Renderer* renderer, ProjectionType type) : Entity(renderer) {
 	_window = window;
 	_view = glm::mat4(1.0f);
 	_proj = glm::mat4(1.0f);
-	name = "Camera";
+	_name = "Camera";
 	_type = type;
-	_worldUp = glm::vec3(0, 1, 0);	
-	_camTytpe = camTytpe;
+	_worldUp = glm::vec3(0, 1, 0);
+	_forward = glm::vec3(0, 0, -1);
+
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
-	_pivot->transform = this->transform;
-	
+	data->addEntity(this, _id);
 }
 
 Camera::~Camera() {
@@ -30,7 +28,7 @@ Camera::~Camera() {
 }
 
 void Camera::updateView() {
-	_view = glm::lookAt(transform.position, transform.position +  forward, up);
+	_view = glm::lookAt(transform.position, transform.position +  _forward, _up);
 }
 
 void Camera::setProjection(ProjectionType type) {
@@ -44,7 +42,7 @@ void Camera::setProjection(ProjectionType type) {
 		break;
 	case ProjectionType::perspective:
 		// FOV					      Aspect	     near   far
-		_proj = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 1.f, 100.0f);
+		_proj = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f);
 		break;
 	default:
 		break;
@@ -54,16 +52,9 @@ void Camera::setProjection(ProjectionType type) {
 
 void Camera::init(Shader& shader) {
 	setProjection(_type);
-	updateVectors(_worldUp);
-	_pivot->updateVectors(_worldUp);
+	updateVectors();
 	updateView();
 	updateShader(shader);
-	if (_camTytpe == CameraType::thirdPerson)
-	{	
-		offset = glm::vec3(0, 1, 3);
-		this->transform.position += offset;
-		setDirection(_pivot->transform.position);
-	}
 }
 
 glm::mat4 Camera::getView() {
@@ -79,14 +70,33 @@ ProjectionType Camera::getProjectionType() {
 }
 
 void Camera::draw(Shader& shader) {
-	updateVectors(_worldUp);
-	_pivot->updateVectors(_worldUp);
+	updateVectors();
 	updateView();
 
 	_renderer->drawCamera(shader, GetModel(), getView(), getProjection());
 }
 
+void Camera::updateVectors()
+{
+	_forward.x = glm::cos(glm::radians(transform.rotation.y)) * glm::cos(glm::radians(transform.rotation.x));
+	_forward.y = glm::sin(glm::radians(transform.rotation.x));
+	_forward.z = glm::sin(glm::radians(transform.rotation.y)) * glm::cos(glm::radians(transform.rotation.x));
+	_forward = glm::normalize(_forward);
+	_right = glm::normalize(glm::cross(_forward, _worldUp));
+	_up = glm::normalize(glm::cross(_right, _forward));
 
+	//limita rotacion de pitch
+	if (transform.rotation.x >= 89.9f) transform.rotation.x = 89.9f;
+	if (transform.rotation.x <= -89.9f) transform.rotation.x = -89.9f;
+}
+
+void Camera::setColor(glm::vec3 color)
+{
+}
+
+void Camera::setColor(float r, float g, float b)
+{
+}
 
 void Camera::rotatePitch(float pitch){
 	transform.rotation.x += pitch;
@@ -96,114 +106,16 @@ void Camera::rotateYaw(float yaw) {
 	transform.rotation.y += yaw;
 }
 
-void Camera::inputs(Input input,Time time)
-{
-	switch (this->_camTytpe)
-	{
-	case CameraType::free:
-	{
-		if (input.getKey(keyCode::W)) {
-			transform.position += getForward() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::S)) {
-			transform.position -= getForward() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::A)) {
-			transform.position -= getRight() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::D)) {
-			transform.position += getRight() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::RIGHT)) {
-			this->rotationSpeed= 100 * time.getDeltaTime();
-			this->rotateYaw(this->rotationSpeed);
-		}
-		if (input.getKey(keyCode::LEFT)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotateYaw(-this->rotationSpeed);
-		}
-		if (input.getKey(keyCode::UP)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotatePitch(this->rotationSpeed);
-		}
-		if (input.getKey(keyCode::DOWN)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotatePitch(-this->rotationSpeed);
-		}
-	}
-		break;
-	case CameraType::firstPerson:
-	{
-		if (input.getKey(keyCode::W)) {
-			
-			_pivot->transform.position -= _pivot->getRight() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::S)) {
-			_pivot->transform.position += _pivot->getRight() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::A)) {
-			_pivot->transform.position -= _pivot->getForward() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::D)) {
-			_pivot->transform.position += _pivot->getForward() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::RIGHT)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotateYaw(this->rotationSpeed);
-			_pivot->transform.rotation.y += this->rotationSpeed;
-		}
-		if (input.getKey(keyCode::LEFT)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotateYaw(-this->rotationSpeed);
-			_pivot->transform.rotation.y += -this->rotationSpeed;
-		}
-		if (input.getKey(keyCode::UP)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotatePitch(this->rotationSpeed);
-		}
-		if (input.getKey(keyCode::DOWN)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotatePitch(-this->rotationSpeed);
-		}
-		transform.position = _pivot->transform.position;
-	}
-		break;
-	case CameraType::thirdPerson:
-	{
-		if (input.getKey(keyCode::W)) {
 
-			_pivot->transform.position -= _pivot->getRight() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::S)) {
-			_pivot->transform.position += _pivot->getRight() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::A)) {
-			_pivot->transform.position -= _pivot->getForward() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::D)) {
-			_pivot->transform.position += _pivot->getForward() * (speed * time.getDeltaTime());
-		}
-		if (input.getKey(keyCode::RIGHT)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotateYaw(this->rotationSpeed);
-			_pivot->transform.rotation.y += this->rotationSpeed;
-		}
-		if (input.getKey(keyCode::LEFT)) {
-			this->rotationSpeed = 100 * time.getDeltaTime();
-			this->rotateYaw(-this->rotationSpeed);
-			_pivot->transform.rotation.y += -this->rotationSpeed;
-		}
-
-		transform.position = _pivot->transform.position + offset;
-	}
-		break;
-	default:
-		break;
-	}
-	
+glm::vec3 Camera::getForward(){
+	return _forward;
 }
-
-
+glm::vec3 Camera::getUp() {
+	return _up;
+}
+glm::vec3 Camera::getRight() {
+	return _right;
+}
 
 void Camera::updateShader(Shader& shader){
 	unsigned int transformLoc = glGetUniformLocation(shader.getID(), "transform");
@@ -216,9 +128,4 @@ void Camera::updateShader(Shader& shader){
 
 void Camera::setDirection(glm::vec3 target){
 	_inverseDirection = glm::normalize(transform.position - target);
-}
-
-Transform Camera::getPivot()
-{
-	return _pivot->transform;
 }

@@ -1,25 +1,26 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef LIGHT_SOURCE_H
+#define LIGHT_SOURCE_H
 #include "export.h"
 #include <glm.hpp>
 #include <iostream>
 #include "entity.h"
 
+#include <string>
 
 class Renderer;
 class TextureImporter;
-class Shader;
+class Shader; 
 
-enum lightType
-{
-	Directional, Point, Spotlight
+enum class LightType {
+	SpotLight, DirectionalLight, PointLight 
 };
-class ENGINE_API Light : public Entity {
-	lightType type;
+class ENGINE_API LightSource : public Entity
+{
+	LightType _type;
 	Renderer* _renderer;
 	TextureImporter* _texImporter;
-	Shader shader;
-	glm::vec3 color;
+	Shader _shader;
+	glm::vec3 _color;
 	unsigned int _vbo = 0;
 	unsigned int _vao = 0;
 	unsigned int _ebo = 0;
@@ -30,10 +31,6 @@ class ENGINE_API Light : public Entity {
 
 	unsigned int diffuse;
 	unsigned int specular;
-
-	void loadBaseSprite();
-	void bindBuffers();
-
 
 	float vertices[264] = {
 		0.5f,  0.5f, 0.5f,   1.f, 1.f, 1.f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
@@ -82,19 +79,25 @@ class ENGINE_API Light : public Entity {
 		21, 22, 23
 	};
 
+	void loadBaseSprite();
+	void bindBuffers();
 
 public:
-	Light(Renderer* renderer, Shader& shader, lightType type, std::string lightName);
-	~Light();
-
+	LightSource(Renderer* renderer, Shader& shader, LightType type, std::string name);
+	~LightSource();
+	bool isActive;
 	void init();
-	virtual void setColor(glm::vec3 color);
-	virtual void setColor(float r, float g, float b);
+	void setColor(glm::vec3 color);
+	void setColor(float r, float g, float b);
 
 	void draw();
 
-	virtual glm::vec3 getColor() const { return color;}
-	
+	inline virtual glm::vec3 getColor() const override { return _color; std::cout << "Hola"; }
+
 };
 
-#endif
+
+
+#endif // !LIGHT_SOURCE_H
+
+

@@ -2,9 +2,7 @@
 #define MATERIALS_H
 #include "export.h"
 #include "glm.hpp"
-
 struct Material {
-
 	float shininess;
 
 	unsigned int diffuseTexture;
@@ -13,3 +11,4 @@ struct Material {
 
 
 #endif // !MATERIALS_H
+

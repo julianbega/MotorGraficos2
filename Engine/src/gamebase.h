@@ -5,20 +5,19 @@
 #include "renderer.h"
 #include "shape.h"
 #include "sprite.h"
+#include "cube.h"
 #include "shader.h"
 #include "gui_layer.h"
 #include "inspector.h"
 #include "world_data.h"
 #include "input.h"
 #include "camera.h"
-#include "camera.h"
 #include "dataManager.h"
 #include "time_manager.h"
-#include "player.h"
-#include "cube.h"
-#include "light.h"
+#include "lightSource.h"
+#include "modelimp.h"
 
-
+using namespace Engine;
 class Renderer;
 class ENGINE_API Gamebase {
 
@@ -28,8 +27,7 @@ protected:
 	Window* window;
 	Renderer* renderer;
 	DataManager* dataManager;
-	Shader basicShader;
-	Shader textureShader;
+	Shader standardShader;
 	Camera* camera;
 	GuiLayer* gui;
 
@@ -38,7 +36,6 @@ protected:
 
 public: 
 	Gamebase();
-	Gamebase(CameraType cam);
 	~Gamebase();
 	int InitEngine();
 	void UpdateEngine();

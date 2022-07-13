@@ -1,5 +1,6 @@
 #include "inspector.h"
 #include "GLFW/glfw3.h"
+#include	"gtc/type_ptr.hpp"
 
 Inspector::Inspector(Window* window, DataManager* dataManager) : GuiLayer(window, dataManager) {
 	_isWindowOpen = true;
@@ -17,7 +18,6 @@ Inspector::Inspector(Window* window, DataManager* dataManager) : GuiLayer(window
 	_scaleZ = 0;
 }
 Inspector::~Inspector() {
-
 }
 //Cambiar todo a la mierda
 void Inspector::getEntity() {
@@ -74,6 +74,17 @@ void Inspector::createWindow() {
 		_dataManager->getSelectedEntity()->SetZRot(_rotZ);
 
 		_dataManager->getSelectedEntity()->SetScale(_scaleX, _scaleY, _scaleZ);
+
+		/*
+		if (_dataManager->getSelectedEntity()->IsLightSource()) {
+			_color = _dataManager->getSelectedEntity()->getColor();
+			ImGui::Text("Light");
+			ImGui::SliderFloat("Intensity", &_lightIntensity, 0.0f, 1.f);
+			ImGui::Separator();
+			ImGui::ColorPicker3("color", glm::value_ptr(_color));
+			_dataManager->getSelectedEntity()->GetShader().setFloat("specularStrength", _lightIntensity);
+			_dataManager->getSelectedEntity()->setEntityColor(_color);
+		}*/
 	}
 	ImGui::End();
 }

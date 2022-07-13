@@ -1,29 +1,28 @@
-#include "light.h"
 #include <GL/glew.h>
+#include "lightSource.h"
 #include "renderer.h"
 #include "dataManager.h"
 #include "texture_importer.h"
 #include "shader.h"
-#include <string>
 
 #define MAX_LIGHTS 4
 
-int Light::nextPointLightId = 0;
-int Light::nextspotLightId = 0;
+int LightSource::nextPointLightId = 0;
+int LightSource::nextspotLightId = 0;
 
-void Light::loadBaseSprite()
+void LightSource::loadBaseSprite()
 {
 	float width = 0;
 	float height = 0;
 	if (_texImporter) {
-		diffuse = _texImporter->loadTexture("../Engine/res/textures/BlankTexture.jpg", width, height, false);
-		specular = _texImporter->loadTexture("../Engine/res/textures/BlankTexture.jpg", width, height, false);
+		diffuse = _texImporter->loadTexture("../Engine/res/textures/BlankTexture.jpg" , width, height, false);
+		specular = _texImporter->loadTexture("../Engine/res/textures/BlankTexture.jpg" , width, height, false);
 	}
 	else
 		std::cout << "Couldn't find image" << std::endl;
 }
 
-void Light::bindBuffers()
+void LightSource::bindBuffers()
 {
 	_renderer->generateVAO(_vao);
 	_renderer->generateVBO(_vbo);
@@ -32,25 +31,27 @@ void Light::bindBuffers()
 	_renderer->bindEBO(_ebo, indices, 36);
 }
 
-Light::Light(Renderer* renderer, Shader& shader, lightType type, std::string lightName) : Entity(renderer)
+LightSource::LightSource(Renderer* renderer, Shader& shader, LightType type, std::string name) : Entity(renderer)
 {
 	_renderer = renderer;
-	type = type;
-	name = lightName;
-	shader = shader;
+	_type = type;
+	_name = name;
+	_shader = shader;
 	_texImporter = new TextureImporter();
-	isLightSource = true;
-	shader.setVec3("lightColor", color);
+	_isLightSource = true;
+	_entityShader = shader;
+	isActive = false;
+	_shader.setVec3("lightColor", _color);
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+	data->addEntity(this, _id);
 	switch (type)
 	{
-	case lightType::Spotlight:
+	case LightType::SpotLight:
 		spotLightId = nextspotLightId++;
 		break;
-	case lightType::Directional:
+	case LightType::DirectionalLight:
 		break;
-	case lightType::Point:
+	case LightType::PointLight:
 		pointLightId = nextPointLightId++;
 		break;
 	default:
@@ -58,24 +59,24 @@ Light::Light(Renderer* renderer, Shader& shader, lightType type, std::string lig
 	}
 }
 
-Light::~Light()
+LightSource::~LightSource()
 {
-	if (_texImporter) {
+	if (_texImporter){
 		delete _texImporter;
 		_texImporter = nullptr;
 	}
 }
 
-void Light::init()
+void LightSource::init()
 {
 	loadBaseSprite();
-	_renderer->setCubeAttribPointer(shader);
+	_renderer->setCubeAttribPointer(_shader);
 	bindBuffers();
 }
 
-void Light::setColor(glm::vec3 color)
+void LightSource::setColor(glm::vec3 color)
 {
-	color = color;
+	_color = color;
 	vertices[3] = color.x; vertices[4] = color.y; vertices[5] = color.z;
 	vertices[14] = color.x; vertices[15] = color.y; vertices[16] = color.z;
 	vertices[25] = color.x; vertices[26] = color.y; vertices[27] = color.z;
@@ -107,9 +108,9 @@ void Light::setColor(glm::vec3 color)
 	vertices[256] = color.x; vertices[257] = color.y; vertices[258] = color.z;
 }
 
-void Light::setColor(float r, float g, float b)
+void LightSource::setColor(float r, float g, float b)
 {
-	color = glm::vec3(r, g, b);
+	_color = glm::vec3(r, g, b);
 	vertices[3] = r; vertices[4] = g; vertices[5] = b;
 	vertices[14] = r; vertices[15] = g; vertices[16] = b;
 	vertices[25] = r; vertices[26] = g; vertices[27] = b;
@@ -141,26 +142,26 @@ void Light::setColor(float r, float g, float b)
 	vertices[256] = r; vertices[257] = g; vertices[258] = b;
 }
 
-void Light::draw()
+void LightSource::draw()
 {
-	if (!active) {
-		switch (type) {
-		case lightType::Directional:
-			shader.setInt("directionalLight.enable", 0);
+	if (isActive) {
+		switch (_type) {
+		case LightType::DirectionalLight:
+			_shader.setInt("directionalLight.enable", 0);
 
 			break;
-		case lightType::Point:
+		case LightType::PointLight:
 		{
 			std::string id = std::to_string(pointLightId);
 			std::string name = "pointLight[" + id + "].";
-			shader.setInt(std::string(name + "enable").c_str(), 0);
+			_shader.setInt(std::string(name + "enable").c_str(), 0);
 		}
 		break;
-		case lightType::Spotlight:
+		case LightType::SpotLight:
 		{
 			std::string id = std::to_string(pointLightId);
 			std::string name = "spotLight[" + id + "].";
-			shader.setInt(std::string(name + "enable").c_str(), 0);
+			_shader.setInt(std::string(name + "enable").c_str(), 0);
 		}
 		break;
 		}
@@ -168,63 +169,62 @@ void Light::draw()
 	}
 
 	updateMatrices();
-	updateVectors(glm::vec3(0.0f, 0.1f, 0.0f));
-
-	switch (type) {
-	case lightType::Directional:
-		shader.setVec3("directionalLight.direction", forward);
-		shader.setVec3("directionalLight.ambient", glm::vec3(.2f, .2f, .2f));
-		shader.setVec3("directionalLight.diffuse", color);
-		shader.setVec3("directionalLight.specular", glm::vec3(1.0));
-		shader.setInt("directionalLight.enable", 1);
+	updateVectors();
+	switch (_type) {
+	case LightType::DirectionalLight:
+		_shader.setVec3("directionalLight.direction", transform.forward);
+		_shader.setVec3("directionalLight.ambient", glm::vec3(.2f, .2f, .2f));
+		_shader.setVec3("directionalLight.diffuse", _color);
+		_shader.setVec3("directionalLight.specular", glm::vec3(1.0));
+		_shader.setInt("directionalLight.enable", 1);
 
 		break;
-	case lightType::Point:
+	case LightType::PointLight:
 	{
 		std::string id = std::to_string(pointLightId);
 		std::string name = "pointLight[" + id + "].";
-		shader.setVec3(std::string(name + "position").c_str(), transform.position);
-		shader.setFloat(std::string(name + "cutoff").c_str(), glm::cos(glm::radians(12.5f)));
-		shader.setFloat(std::string(name + "outerCutOff").c_str(), glm::cos(glm::radians(17.5f)));
+		_shader.setVec3(std::string(name + "position").c_str(), transform.position);
+		_shader.setFloat(std::string(name + "cutoff").c_str(), glm::cos(glm::radians(12.5f)));
+		_shader.setFloat(std::string(name + "outerCutOff").c_str(), glm::cos(glm::radians(17.5f)));
 
-		shader.setFloat(std::string(name + "constant").c_str(), 1.0f);
-		shader.setFloat(std::string(name + "linear").c_str(), 0.09f);
-		shader.setFloat(std::string(name + "quadratic").c_str(), 0.032f);
+		_shader.setFloat(std::string(name + "constant").c_str(), 1.0f);
+		_shader.setFloat(std::string(name + "linear").c_str(), 0.09f);
+		_shader.setFloat(std::string(name + "quadratic").c_str(), 0.032f);
 
-		shader.setVec3(std::string(name + "ambient").c_str(), glm::vec3(.05f));
-		shader.setVec3(std::string(name + "diffuse").c_str(), color);
-		shader.setVec3(std::string(name + "specular").c_str(), glm::vec3(1.0));
+		_shader.setVec3(std::string(name + "ambient").c_str(), glm::vec3(.05f));
+		_shader.setVec3(std::string(name + "diffuse").c_str(), _color);
+		_shader.setVec3(std::string(name + "specular").c_str(), glm::vec3(1.0));
 
-		shader.setInt(std::string(name + "enable").c_str(), 1);
+		_shader.setInt(std::string(name + "enable").c_str(), 1);
 	}
 	break;
-	case lightType::Spotlight:
+	case LightType::SpotLight:
 	{
 		std::string id = std::to_string(pointLightId);
 		std::string name = "spotLight[" + id + "].";
-		shader.setVec3(std::string(name + "position").c_str(), transform.position);
-		shader.setVec3(std::string(name + "direction").c_str(), forward);
-		shader.setFloat(std::string(name + "cutoff").c_str(), glm::cos(glm::radians(12.5f)));
-		shader.setFloat(std::string(name + "outerCutOff").c_str(), glm::cos(glm::radians(17.5f)));
+		_shader.setVec3(std::string(name + "position").c_str(), transform.position);
+		_shader.setVec3(std::string(name + "direction").c_str(), transform.forward);
+		_shader.setFloat(std::string(name + "cutoff").c_str(), glm::cos(glm::radians(12.5f)));
+		_shader.setFloat(std::string(name + "outerCutOff").c_str(), glm::cos(glm::radians(17.5f)));
 
-		shader.setFloat(std::string(name + "constant").c_str(), 1.0f);
-		shader.setFloat(std::string(name + "linear").c_str(), 0.09f);
-		shader.setFloat(std::string(name + "quadratic").c_str(), 0.032f);
+		_shader.setFloat(std::string(name + "constant").c_str(), 1.0f);
+		_shader.setFloat(std::string(name + "linear").c_str(), 0.09f);
+		_shader.setFloat(std::string(name + "quadratic").c_str(), 0.032f);
 
-		shader.setVec3(std::string(name + "ambient").c_str(), glm::vec3(0));
-		shader.setVec3(std::string(name + "diffuse").c_str(), color);
-		shader.setVec3(std::string(name + "specular").c_str(), glm::vec3(1.0));
+		_shader.setVec3(std::string(name + "ambient").c_str(), glm::vec3(0));
+		_shader.setVec3(std::string(name + "diffuse").c_str(), _color);
+		_shader.setVec3(std::string(name + "specular").c_str(), glm::vec3(1.0));
 
-		shader.setInt(std::string(name + "enable").c_str(), 1);
+		_shader.setInt(std::string(name + "enable").c_str(), 1);
 	}
 	break;
 	}
 
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, diffuse);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, specular);
-	_renderer->drawCube(shader, _vao, _vbo, vertices, 264, GetModel());
-	glDisable(GL_TEXTURE_2D);
+glActiveTexture(GL_TEXTURE0);
+glBindTexture(GL_TEXTURE_2D, diffuse);
+glActiveTexture(GL_TEXTURE1);
+glBindTexture(GL_TEXTURE_2D, specular);
+_renderer->drawCube(_shader, _vao, _vbo, vertices, 264, GetModel());
+glDisable(GL_TEXTURE_2D);
 }

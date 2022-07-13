@@ -57,34 +57,34 @@ void Cube::clearBuffers()
 	_renderer->deleteBuffers(_vao, _vbo, _ebo);
 }
 
-Cube::Cube(Renderer* renderer, Shader& shader, std::string cubesName) : Entity(renderer)
+Cube::Cube(Renderer* renderer, Shader& shader, std::string name) : Entity(renderer)
 {
 	_transparency = true;
 	_texImporter = new TextureImporter();
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	name = cubesName;
+	_name = name;
 	_hasTexture = false;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+	data->addEntity(this, _id);
 }
 
-Cube::Cube(Renderer* renderer, Shader& shader, std::string cubesName, bool transparency) : Entity(renderer)
+Cube::Cube(Renderer* renderer, Shader& shader, std::string name, bool transparency) : Entity(renderer)
 {
 	_transparency = transparency;
 	_texImporter = new TextureImporter();
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	name = cubesName;
+	_name = name;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+	data->addEntity(this, _id);
 }
 
-Cube::Cube(Renderer* renderer, Shader& shader, std::string cubesName, const char* path, bool transparency) : Entity(renderer)
+Cube::Cube(Renderer* renderer, Shader& shader, std::string name, const char* path, bool transparency) : Entity(renderer)
 {
 	_transparency = transparency;
 	_texImporter = new TextureImporter();
@@ -92,10 +92,10 @@ Cube::Cube(Renderer* renderer, Shader& shader, std::string cubesName, const char
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	name = cubesName;
+	_name = name;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+	data->addEntity(this, _id);
 }
 
 Cube::Cube(Renderer* renderer) : Entity(renderer)
@@ -104,10 +104,10 @@ Cube::Cube(Renderer* renderer) : Entity(renderer)
 	_texImporter = new TextureImporter();
 	_width = 0;
 	_height = 0;
-	name = "cube_" + id;
+	_name = "cube_" + _id;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+	data->addEntity(this, _id);
 }
 
 Cube::~Cube()
@@ -121,7 +121,7 @@ Cube::~Cube()
 void Cube::initWithBasicTexture()
 {
 	loadSprite();
-	_renderer->setCubeAttribPointer(_shader);
+	_renderer->setCubeAttribPointer( _shader);
 	bindBuffers();
 	material.diffuseTexture = _texImporter->loadTexture("../Engine/res/textures/GridTexture.png", _width, _height, _transparency);
 	material.specularTexture = _texImporter->loadTexture("../Engine/res/textures/GridTexture.png", _width, _height, _transparency);
@@ -130,8 +130,8 @@ void Cube::initWithBasicTexture()
 
 void Cube::init(const char* diffuseTexturePath, const char* specularTexturePath)
 {
-	bindBuffers();
 	_renderer->setCubeAttribPointer(_shader);
+	bindBuffers();
 	if (_texImporter) {
 		material.diffuseTexture = _texImporter->loadTexture(diffuseTexturePath, _width, _height, true);
 
@@ -233,8 +233,8 @@ void Cube::SetColor(glm::vec3 color)
 void Cube::draw()
 {
 	updateMatrices();
-	updateVectors(glm::vec3(0.0f , 1.0f, 0.0f));
-	_shader.setFloat("material.shininess" , material.shininess);
+	updateVectors();
+	_shader.setFloat("material.shininess", material.shininess);
 	if (_transparency) {
 		blendSprite();
 		bindTextures();
@@ -255,4 +255,12 @@ void Cube::setTransparency(bool value) {
 }
 void Cube::ShouldHaveTextures(bool value) {
 	_hasTexture = value;
+}
+
+void Cube::setColor(glm::vec3 color)
+{
+}
+
+void Cube::setColor(float r, float g, float b)
+{
 }
