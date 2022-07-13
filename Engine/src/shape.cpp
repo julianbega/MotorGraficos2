@@ -2,26 +2,31 @@
 
 #include <stdlib.h>
 
-Shape::Shape(Type type, Renderer* renderer, Shader &shader, std::string shapeName) : Entity(renderer){
+Shape::Shape(Type type, Renderer* renderer, Shader &shader, std::string name) : Entity(renderer){
 	shape = type;
-	name = shapeName;
+	_name = name;
 	_shader = shader;
+
 	_vao = 0;
 	_vbo = 0;
 	_ebo = 0;
+
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+
+	data->addEntity(this, _id);
 }
 	
 Shape::~Shape() {
 	clearBuffers();
 }
 
-void Shape::initShape() {	
+void Shape::initShape() {
+	_renderer->setPositionAttribPointer(_shader.getID(), "pos");
+	_renderer->setTintAttribPointer(_shader.getID(), "color");
 	generateVAO();
+	_renderer->generateVBO(_vbo);
 	bindVBO();
 	bindEBO();
-	setters();
 }
 
 void Shape::generateVAO() {
@@ -32,32 +37,6 @@ void Shape::bindVAO() {
 	_renderer->bindVAO(_vao);
 }
 
-void Shape::setters() {
-	switch (shape)
-	{
-	case Type::quad:
-		_renderer->SetVertexAttributes("pos", 6, _shader.getID());
-		_renderer->SetColorAttributes("texColor", 6, _shader.getID());
-		break;
-	case Type::tri:
-		_renderer->SetVertexAttributes("pos", 6, _shader.getID());
-		_renderer->SetColorAttributes("texColor", 6, _shader.getID());
-		break;
-	case Type::cube:
-		_renderer->SetVertexAttributes("pos", 6, _shader.getID());
-		_renderer->SetColorAttributes("texColor", 6, _shader.getID());
-		break;
-	case Type::normalCube:
-		_renderer->SetVertexAttributes("pos", 9, _shader.getID());
-		_renderer->SetColorAttributes("texColor", 9, _shader.getID());
-		_renderer->SetNormalAttributes("aNormal", 9, _shader.getID());
-		//_renderer->SetTextureAttributes("aTexCoord", 9, _shader.getID());
-		break;
-	default:
-		break;
-	}
-}
-
 void Shape::bindVBO() {
 	switch (shape)
 	{
@@ -66,12 +45,6 @@ void Shape::bindVBO() {
 		break;
 	case Type::tri:
 		_renderer->bindVBO(_vbo, triangleVertices, 22);
-		break;
-	case Type::cube:
-		_renderer->bindVBO(_vbo, cubeVertices, 52);
-		break; 
-	case Type::normalCube:
-		_renderer->bindVBO(_vbo, cubeVertices, 328);
 		break;
 	default:
 		break;
@@ -87,12 +60,6 @@ void Shape::bindEBO() {
 	case Type::tri:
 		_renderer->bindEBO(_ebo, triangleIndices, 3);
 		break;
-	case Type::cube:
-		_renderer->bindEBO(_ebo, cubeIndices, 36);
-		break;
-	case Type::normalCube:
-		_renderer->bindEBO(_ebo, cubeIndicesNormal, 36);
-		break;
 	default:
 		break;
 	}
@@ -100,6 +67,7 @@ void Shape::bindEBO() {
 
 void Shape::bindBuffers(float* quadVertex, float* triVertex, int quadVertexSize, int triVertexSize){
 	generateVAO();
+	_renderer->generateVBO(_vbo);
 	switch (shape)
 	{
 	case Type::quad:
@@ -110,21 +78,12 @@ void Shape::bindBuffers(float* quadVertex, float* triVertex, int quadVertexSize,
 		_renderer->bindVBO(_vbo, triVertex, triVertexSize);
 		_renderer->bindEBO(_ebo, triangleIndices, 3);
 		break;
-	case Type::cube:
-		_renderer->bindVBO(_vbo, cubeVertices, 52);
-		_renderer->bindEBO(_ebo, cubeIndices, 26);
-		break;
-	case Type::normalCube:
-		_renderer->bindVBO(_vbo, cubeVertices, 328);
-		_renderer->bindEBO(_ebo, cubeIndicesNormal, 36);
-		break;
 	default:
 		break;
 	}
 }
 
 void Shape::setColor(float r, float g, float b) {
-	parameterType = 0;
 	switch (shape)
 	{
 	case Type::quad:
@@ -138,12 +97,6 @@ void Shape::setColor(float r, float g, float b) {
 		triangleVertices[9] = r; triangleVertices[10] = g; triangleVertices[11] = b;
 		triangleVertices[15] = r; triangleVertices[16] = g; triangleVertices[17] = b;
 		break;
-	case Type::cube:
-		cubeVertices[3] = r; cubeVertices[4] = g; cubeVertices[5] = b;
-		cubeVertices[9] = r; cubeVertices[10] = g; cubeVertices[11] = b;
-		cubeVertices[15] = r; cubeVertices[16] = g; cubeVertices[17] = b;
-		cubeVertices[21] = r; cubeVertices[22] = g; cubeVertices[23] = b;
-		break;	
 	default:
 		break;
 	}
@@ -152,66 +105,19 @@ void Shape::setColor(float r, float g, float b) {
 void Shape::clearBuffers() {
 	_renderer->deleteBuffers(_vao, _vbo, _ebo);
 }
-/*
-void Shape::setMaterial(vec3 ambient, vec3 diffuse, vec3 specular, float shininess)
-{
-	parameterType = 1;
-	_material.ambient = ambient;
-	_material.diffuse = diffuse;
-	_material.specular = specular;
-	_material.shininess = shininess;
-}
 
-void Shape::setMaterial(Material mat)
-{
-	parameterType = 1;
-	_material.ambient = mat.ambient;
-	_material.diffuse = mat.diffuse;
-	_material.specular = mat.specular;
-	_material.shininess = mat.shininess;
-}
-*/
 void Shape::draw() {
 	updateMatrices();
-	if (parameterType == 0)
+	switch (shape)
 	{
-		switch (shape)
-		{
-		case Type::quad:
-			_renderer->draw(_shader, _vao, _vbo, quadVertices, 28, GetModel(), 6, 6);
-			break; 
-		case Type::tri:
-			_renderer->draw(_shader, _vao, _vbo, triangleVertices, 22, GetModel(), 6, 3);
-			break;
-		case Type::cube:
-			_renderer->draw(_shader, _vao, _vbo, cubeVertices, 52, GetModel(), 6, 36);
-			break;
-		case Type::normalCube:
-			_renderer->draw(_shader, _vao, _vbo, cubeVerticesNormal, 328, GetModel(), 9, 36);
-			break;
-		default:
-			break;
-		}
-	}
-	else if (parameterType == 1)
-	{
-		switch (shape)
-		{
-		case Type::quad:
-			_renderer->drawMaterial(_shader, _vao, _vbo, quadVertices, 28, GetModel(), 6, 6);
-			break;
-		case Type::tri:
-			_renderer->drawMaterial(_shader, _vao, _vbo, triangleVertices, 22, GetModel(), 6, 3);
-			break;
-		case Type::cube:
-			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVertices, 52, GetModel(), 6, 36);
-			break;
-		case Type::normalCube:
-			_renderer->drawMaterial(_shader, _vao, _vbo, cubeVerticesNormal, 328, GetModel(), 9, 36);
-			break;
-		default:
-			break;
-		}
+	case Type::quad:
+		_renderer->draw(_shader, _vao, _vbo, quadVertices, 28, GetModel());
+		break; 
+	case Type::tri:
+		_renderer->draw(_shader, _vao, _vbo, triangleVertices, 22, GetModel());
+		break;
+	default:
+		break;
 	}
 }
 

@@ -4,14 +4,14 @@
 #include "sprite.h"
 #include "dataManager.h"
 
-Sprite::Sprite(bool transparency, Renderer* renderer, Shader& shader, std::string spriteName) : Entity(renderer)
+Sprite::Sprite(bool transparency, Renderer* renderer, Shader& shader, std::string name) : Entity(renderer)
 {
 	_transparency = transparency;
 	texImporter = new TextureImporter();
 	_shader = shader;
 	_width = 0;
 	_height = 0;
-	name = spriteName;
+	_name = name;
 
 	uv[0].u = 0.0f; uv[0].v = 0.0f;
 	uv[1].u = 0.0f; uv[1].v = 0;
@@ -20,23 +20,23 @@ Sprite::Sprite(bool transparency, Renderer* renderer, Shader& shader, std::strin
 
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+	data->addEntity(this, _id);
 }
 
-Sprite::Sprite(bool transparency, const char* path, Renderer* renderer, Shader& shader, std::string spriteName) : Entity(renderer)
+Sprite::Sprite(bool transparency, const char* path, Renderer* renderer, Shader& shader, std::string name) : Entity(renderer)
 {
 	_transparency = transparency;
 	texImporter = new TextureImporter();
 	texImporter->SetPath(path);
 	_shader = shader;
-	name = spriteName;
+	_name = name;
 
 
 	_width = 0;
 	_height = 0;
 
 	DataManager* data = DataManager::Get();
-	data->addEntity(this, id);
+	data->addEntity(this, _id);
 }
 
 Sprite::~Sprite()
@@ -51,8 +51,9 @@ Sprite::~Sprite()
 
 void Sprite::init(){
 	LoadSprite();
-	_renderer->setUVAttribPointer(_shader.getID());
+	_renderer->setTexAttribPointer(_shader.getID());
 	bindBuffers();
+
 }
 
 void Sprite::LoadSprite() {
@@ -60,6 +61,7 @@ void Sprite::LoadSprite() {
 		texImporter->LoadImage(_width, _height, _transparency);
 	else
 		std::cout << "Couldn't find image" << std::endl;
+
 }
 
 void Sprite::LoadSprite(int width, int height) {
@@ -127,6 +129,7 @@ void Sprite::bindEBO() {
 
 void Sprite::bindBuffers() {
 	generateVAO();
+	_renderer->generateVBO(_vbo);
 	bindVAO();
 	bindVBO();
 	bindEBO();

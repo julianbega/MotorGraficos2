@@ -7,6 +7,8 @@
 
 #include <iostream>
 #define STBI_FAILURE_USERMSG 
+using namespace std;
+#include <string>
 
 TextureImporter::TextureImporter(){
 	_texture = 0;
@@ -62,18 +64,6 @@ void TextureImporter::LoadImage(int width, int height, bool transparency){
 	stbi_image_free(_data);
 }
 
-void TextureImporter::SetPath(const char* path){
-	_path = path;
-}
-
-const char* TextureImporter::GetPath(){
-	return _path;
-}
-
-unsigned int TextureImporter::GetTexture(){
-	return _texture;
-}
-
 unsigned int TextureImporter::loadTexture(const char* path, int width, int height, bool transparency)
 {
 	unsigned int texture = 0;
@@ -98,9 +88,9 @@ unsigned int TextureImporter::loadTexture(const char* path, int width, int heigh
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		if (!transparency)
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
 		else
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB_ALPHA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _data);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
@@ -112,9 +102,9 @@ unsigned int TextureImporter::loadTexture(const char* path, int width, int heigh
 	return texture;
 }
 
-unsigned int TextureImporter::textureFromFile(const char* path, const std::string& directory, bool gamma)
+/*unsigned int TextureImporter::TextureFromFile(const char* path, const string& directory)
 {
-	std::string filename = std::string(path);
+	string filename = string(path);
 	filename = directory + '/' + filename;
 
 	unsigned int textureID;
@@ -150,4 +140,16 @@ unsigned int TextureImporter::textureFromFile(const char* path, const std::strin
 	}
 
 	return textureID;
+}*/
+
+void TextureImporter::SetPath(const char* path){
+	_path = path;
+}
+
+const char* TextureImporter::GetPath(){
+	return _path;
+}
+
+unsigned int TextureImporter::GetTexture(){
+	return _texture;
 }
