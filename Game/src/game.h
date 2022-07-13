@@ -1,19 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 #include "gamebase.h"
-#include "glm.hpp"
 
 class Game : public Gamebase{
-
+	Cube* cube;
+	LightSource* spot;
+	LightSource* point;
+	LightSource* point2;
+	ModelImp* model;
 	float timer = 0;
 	float speed = 1;
 	float rotationSpeed = 100;
-
-	Cube* cube;
-	Light* directional;
-	Light* spot;
-	Light* point;
-
+		
 	float lastX;
 	float lastY;
 	bool firstMouse = true;
