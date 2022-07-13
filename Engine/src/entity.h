@@ -63,6 +63,7 @@ public:
 	void updateVectors();
 
 	std::string GetName();
+	glm::vec3 getScale();
 	inline virtual glm::vec3 getColor() const { return glm::vec3(1); };
 	inline bool IsLightSource() { return _isLightSource; }
 	inline Shader GetShader() { return _entityShader; }

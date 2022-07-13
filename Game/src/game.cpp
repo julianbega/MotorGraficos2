@@ -31,22 +31,22 @@ void Game::Init() {
 
 	point = new LightSource(renderer, standardShader, LightType::PointLight, "point");
 	point->init();
-	point->SetPosition(-.5f, .5f, -1.f);
+	point->SetPosition(-.5f, .5f, 0.25f);
 	point->SetYRot(-90);
 	point->SetScale(.1f, .1f, .1f);
-	point->setColor(1, 1, 1);
+	point->setColor(0.2f, 0.2f, 1);
 	//point->
 
 	point2 = new LightSource(renderer, standardShader, LightType::PointLight, "point2");
 	point2->init();
-	point2->SetPosition(-.5f, .5f, -1.f);
+	point2->SetPosition(0.5f, .5f, 0.25f);
 	point2->SetYRot(-90);
 	point2->SetScale(.1f, .1f, .1f);
-	point2->setColor(1, 1, 1);
+	point2->setColor(1, 0.2f, 0.2f);
 
 	model = new ModelImp(renderer, standardShader, "res/models/cyborg/cyborg.obj");
-	model->SetPosition(0.0f, 2.5f, 0.0f);
-	model->SetScale(2.0f, 2.0f, 2.0f);
+	model->SetPosition(0.0f, 0.0f, 0.0f);
+	model->SetScale(0.25f, 0.25f, 0.25f);
 }
 
 	//game update
@@ -105,6 +105,24 @@ void Game::Inputs() {
 	if (input.getKey(keyCode::DOWN)) {
 		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
 		camera->rotatePitch(-camera->rotationSpeed);
+	}
+	if (input.getKey(keyCode::R)) {
+		model->SetScale(model->getScale().x + 0.01f, model->getScale().y + 0.01f, model->getScale().z + 0.01f);		
+	}
+	if (input.getKey(keyCode::T)) {
+		model->SetScale(model->getScale().x - 0.01f, model->getScale().y - 0.01f, model->getScale().z - 0.01f);
+	}
+	if (input.getKey(keyCode::F)) {
+		model->SetYRot(model->transform.rotation.y - 1.0f);
+	}
+	if (input.getKey(keyCode::G)) {
+		model->SetYRot(model->transform.rotation.y + 1.0f);
+	}
+	if (input.getKey(keyCode::V)) {
+		model->SetPosition(model->transform.position.x - 0.01f, model->transform.position.y - 0.01f, model->transform.position.z - 0.01f);
+	}
+	if (input.getKey(keyCode::B)) {
+		model->SetPosition(model->transform.position.x + 0.01f, model->transform.position.y + 0.01f, model->transform.position.z + 0.01f);
 	}
 }
 

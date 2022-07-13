@@ -152,3 +152,8 @@ void Entity::updateVectors()
 std::string Entity::GetName() {
 	return _name;
 }
+
+glm::vec3 Entity::getScale()
+{
+	return transform.scale;
+}
