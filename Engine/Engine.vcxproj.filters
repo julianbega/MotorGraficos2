@@ -28,12 +28,6 @@
     <Filter Include="GUI\Lib\LibSource">
       <UniqueIdentifier>{b35817af-20c6-48d9-b833-7953abeea7cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Cameras">
-      <UniqueIdentifier>{035ee731-c1ee-40f0-8be6-1d34fd0c072c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Cameras">
-      <UniqueIdentifier>{f71670f3-175f-489d-8d8f-e8ce4c215999}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\export.h">
@@ -67,6 +61,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\imgui_impl_glfw.h">
@@ -114,22 +111,19 @@
     <ClInclude Include="src\entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\camera.h">
-      <Filter>Header Files\Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="src\light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="global_declarations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\lightSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\materials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modelimp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -162,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\gui\imgui_impl_opengl3.cpp">
@@ -197,36 +194,24 @@
     <ClCompile Include="src\entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\camera.cpp">
-      <Filter>Source Files\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modelimp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\vertexShader.vert">
+    <None Include="src\shaders\StandardShader.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="src\shaders\fragmentShader.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="src\shaders\texFragmentShader.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="src\shaders\vertexShaderLights.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="src\shaders\fragmentShaderLights.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="src\shaders\fragmentShader2.frag">
+    <None Include="src\shaders\StandardShader.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

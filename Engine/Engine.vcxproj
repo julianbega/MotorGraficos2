@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="global_declarations.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\cube.h" />
@@ -39,9 +38,10 @@
     <ClInclude Include="src\gui\imstb_truetype.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\inspector.h" />
-    <ClInclude Include="src\light.h" />
+    <ClInclude Include="src\lightSource.h" />
     <ClInclude Include="src\materials.h" />
-    <ClInclude Include="src\player.h" />
+    <ClInclude Include="src\mesh.h" />
+    <ClInclude Include="src\modelimp.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\shape.h" />
@@ -68,8 +68,9 @@
     <ClCompile Include="src\gui\imgui_widgets.cpp" />
     <ClCompile Include="src\input.cpp" />
     <ClCompile Include="src\inspector.cpp" />
-    <ClCompile Include="src\light.cpp" />
-    <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\lightSource.cpp" />
+    <ClCompile Include="src\mesh.cpp" />
+    <ClCompile Include="src\modelimp.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shape.cpp" />
@@ -80,12 +81,8 @@
     <ClCompile Include="src\world_data.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\fragmentShader.frag" />
-    <None Include="src\shaders\fragmentShader2.frag" />
-    <None Include="src\shaders\fragmentShaderLights.frag" />
-    <None Include="src\shaders\texFragmentShader.frag" />
-    <None Include="src\shaders\vertexShader.vert" />
-    <None Include="src\shaders\vertexShaderLights.vert" />
+    <None Include="src\shaders\StandardShader.frag" />
+    <None Include="src\shaders\StandardShader.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -164,14 +161,15 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)lib\glm;$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\include;$(ProjectDir)lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)lib\glm;$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\include;$(ProjectDir)lib\glew-2.1.0\include;$(ProjectDir)lib\assimp\1.4.0\Assimp\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\lib-vc2019;$(ProjectDir)lib\glew-2.1.0\lib\RLibs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\lib-vc2019;$(ProjectDir)lib\glew-2.1.0\lib\RLibs\Win32;$(ProjectDir)lib\assimp\1.4.0\Assimp\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>"$(SolutionDir)Engine\EngineDLLCopy.bat" "$(SolutionDir)Engine\bin\Debug\Engine.dll" "$(SolutionDir)Engine\lib\glew-2.1.0\lib\RLibs\Win32\glew32.dll" "$(SolutionDir)Game"
@@ -206,14 +204,14 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)lib\glm;$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\include;$(ProjectDir)lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)lib\glm;$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\include;$(ProjectDir)lib\glew-2.1.0\include;$(ProjectDir)lib\assimp\1.4.0\Assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\lib-vc2019;$(ProjectDir)lib\glew-2.1.0\lib\RLibs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib\glfw-3.3.2.bin.WIN32\lib-vc2019;$(ProjectDir)lib\glew-2.1.0\lib\RLibs\Win32;$(ProjectDir)lib\assimp\1.4.0\Assimp\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>"$(SolutionDir)Engine\EngineDLLCopy.bat" "$(SolutionDir)Engine\bin\Debug\Engine.dll" "$(SolutionDir)Engine\lib\glew-2.1.0\lib\RLibs\Win32\glew32.dll" "$(SolutionDir)Game"

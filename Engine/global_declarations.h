@@ -1,7 +1,0 @@
-#ifndef GLOBAL_DECLARATIONS_H
-#define GLOBAL_DECLARATIONS_H
-
-
-
-
-#endif
