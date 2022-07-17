@@ -15,7 +15,7 @@
 #include "dataManager.h"
 #include "time_manager.h"
 #include "lightSource.h"
-#include "modelimp.h"
+#include "model.h"
 
 using namespace Engine;
 class Renderer;

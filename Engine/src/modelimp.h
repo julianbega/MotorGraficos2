@@ -23,43 +23,16 @@
 
 
 namespace Engine {
-	class ENGINE_API ModelImp : public Entity{
-	private:
-		int _width = 0;
-		int _height = 0;
-		bool _transparency;
-		std::vector<Texture> _textures_loaded;
-		std::vector<Mesh> _meshes;
-		std::string _path;
-		Renderer *_renderer = nullptr;
-		const char* _modelTexture;
-		std::string _directory;
-		//const string* _modelTexture;
-		void LoadModel(std::string path);
-		void ProcessNode(aiNode* node, const aiScene* scene);
-		Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-		std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-
-		TextureImporter* _texImporter = NULL;
-
-		Shader _shader;
-
-		unsigned int TextureFromFile(const char* path, const std::string &directory,bool gamma);
-		void LoadTexture();
-		unsigned int TextureModel(const char* texture);
+	static class ENGINE_API ModelImp{	
 	public:
 		ModelImp();
-		ModelImp(Renderer* render, Shader shader, std::string path, const char* modelTexture);
-		ModelImp(Renderer* render, Shader shader, std::string path);
 		~ModelImp();
-		void MoveModel(glm::vec3 direction);
-		void ScaleModel(float x, float y, float z);
-		void RotateModelX(float x);
-		void RotateModelY(float y);
-		void RotateModelZ(float z);
-		//void SetModelPath(string path);
-		//void SetTexturePath(const char* texturePath);
-		void Draw(Shader& shader);
+		static void LoadModel(std::string path, std::string& _directory, std::vector<Mesh>& _meshes, Shader& _shader, std::vector<Texture>& _textures_loaded);
+		static void ProcessNode(aiNode* node, const aiScene* scene, std::string& _directory, std::vector<Mesh>& _meshes, Shader& _shader, std::vector<Texture>& _textures_loaded);
+		static Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& _directory, Shader& _shader, std::vector<Texture>& _textures_loaded);
+		static std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::string& _directory, std::vector<Texture>& _textures_loaded);
+		static unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma);
+		static void Draw(Shader& shader, std::vector<Mesh>& _meshes, glm::mat4 mvp);
 	};
 }
 

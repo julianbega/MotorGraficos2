@@ -44,7 +44,7 @@ void Game::Init() {
 	point2->SetScale(.1f, .1f, .1f);
 	point2->setColor(1, 0.2f, 0.2f);
 
-	model = new ModelImp(renderer, standardShader, "res/models/cyborg/cyborg.obj");
+	model = new Model(renderer, standardShader, "res/models/cyborg/cyborg.obj");
 	model->SetPosition(0.0f, 0.0f, 0.0f);
 	model->SetScale(0.25f, 0.25f, 0.25f);
 }

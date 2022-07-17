@@ -4,69 +4,15 @@
 #include "dataManager.h"
 using namespace Engine;
 
-ModelImp::ModelImp() : Entity(_renderer) {
-    _path = "";
-    _directory = "";
-}
-
-ModelImp::ModelImp(Renderer* render, Shader shader, std::string path, const char* modelTexture) : Entity(render){
-    _modelTexture = modelTexture;
-    LoadModel(path);
-    _shader = shader;
-	_name = "modelo";
-	DataManager* data = DataManager::Get();
-	data->addEntity(this, _id);
+ModelImp::ModelImp() {
 
 }
 
-ModelImp::ModelImp( Renderer* render, Shader shader, std::string path) : Entity(render) {
-    LoadModel(path);
-	_renderer = render;
-    _shader = shader;
-    _texImporter = new TextureImporter();
-}
 
 ModelImp::~ModelImp() {
-    if (_texImporter != NULL) {
-        delete _texImporter;
-        _texImporter = NULL;
-    }
 }
 
-void ModelImp::MoveModel(glm::vec3 direction) {
-    for (int i = 0; i < _meshes.size(); i++) {
-        _meshes[i].SetPosition(direction.x, direction.y, direction.z);
-    }
-}
-
-void ModelImp::ScaleModel(float x, float y, float z) {
-    for (int i = 0; i < _meshes.size(); i++) {
-        if (x < 0 || y < 0 || z < 0) {
-            x = 0;y = 0;z = 0;
-        }
-        _meshes[i].SetScale(x, y, z);
-    }
-}
-
-void ModelImp::RotateModelX(float x) {
-    for (int i = 0; i < _meshes.size(); i++) {
-        _meshes[i].SetXRot(x);
-    }
-}
-
-void ModelImp::RotateModelY(float y) {
-    for (int i = 0; i < _meshes.size(); i++) {
-        _meshes[i].SetYRot(y);
-    }
-}
-
-void ModelImp::RotateModelZ(float z) {
-    for (int i = 0; i < _meshes.size(); i++) {
-        _meshes[i].SetZRot(z);
-    }
-}
-
-void ModelImp::LoadModel(std::string path) {
+void ModelImp::LoadModel(std::string path, std::string& _directory, std::vector<Mesh>& _meshes, Shader& _shader, std::vector<Texture>& _textures_loaded) {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 
@@ -78,21 +24,21 @@ void ModelImp::LoadModel(std::string path) {
     _directory = path.substr(0, path.find_last_of('/')); // se guarda el directory para la carga de texturas
 
     if(scene)
-        ProcessNode(scene->mRootNode, scene);
+        ProcessNode(scene->mRootNode, scene, _directory, _meshes, _shader, _textures_loaded);
 }
 
-void ModelImp::ProcessNode(aiNode* node, const aiScene* scene) {
+void ModelImp::ProcessNode(aiNode* node, const aiScene* scene, std::string& _directory, std::vector<Mesh>& _meshes, Shader& _shader, std::vector<Texture>& _textures_loaded) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        _meshes.push_back(ProcessMesh(mesh, scene));
+        _meshes.push_back(ProcessMesh(mesh, scene, _directory, _shader, _textures_loaded));
     }
 
     for (unsigned int i = 0; i < node->mNumChildren; i++) {
-        ProcessNode(node->mChildren[i], scene);
+        ProcessNode(node->mChildren[i], scene, _directory, _meshes, _shader, _textures_loaded);
     }
 }
 
-Mesh ModelImp::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
+Mesh ModelImp::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string& _directory, Shader& _shader, std::vector<Texture>& _textures_loaded) {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
@@ -143,23 +89,23 @@ Mesh ModelImp::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
 
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-	std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
+	std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse", _directory, _textures_loaded);
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
     // 2. specular maps
-	std::vector<Texture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "specular");
+	std::vector<Texture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "specular", _directory, _textures_loaded);
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     // 3. normal maps
-    std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "normal");
+    std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "normal", _directory, _textures_loaded);
     textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
     // 4. height maps
-    std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "height");
+    std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "height", _directory, _textures_loaded);
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 
     return Mesh(vertices, indices, textures, _shader);
 }
 
-std::vector<Texture> ModelImp::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName) {
+std::vector<Texture> ModelImp::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::string& _directory, std::vector<Texture>& _textures_loaded) {
 	std::vector<Texture> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
@@ -176,7 +122,7 @@ std::vector<Texture> ModelImp::LoadMaterialTextures(aiMaterial* mat, aiTextureTy
 			int width = 0;
 			int height = 0;
             Texture texture;
-            texture.id = TextureFromFile(str.C_Str(), this->_directory, false);
+            texture.id = TextureFromFile(str.C_Str(), _directory, false);
             //texture.id = _texImporter->loadTexture(str.C_Str(), width, height, true);
             texture.type = typeName;
             texture.path = str.C_Str();
@@ -189,11 +135,10 @@ std::vector<Texture> ModelImp::LoadMaterialTextures(aiMaterial* mat, aiTextureTy
     return textures;
 }
 
-void ModelImp::Draw(Shader& shader) {
-	updateMatrices();
-	updateVectors();
+void ModelImp::Draw(Shader& shader, std::vector<Mesh>& _meshes, glm::mat4 mvp) {
+	
     for (unsigned int i = 0; i < _meshes.size(); i++)
-        _meshes[i].Draw(shader, GetModel());
+        _meshes[i].Draw(shader, mvp);
 }
 
 unsigned int ModelImp::TextureFromFile(const char* path, std::string const &directory,bool gamma) {

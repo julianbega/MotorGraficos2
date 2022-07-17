@@ -11,7 +11,7 @@ struct ENGINE_API Rotation {
 	glm::mat4 z;
 };
 
-struct ENGINE_API Model {
+struct ENGINE_API EntityModel {
 	glm::mat4 translate;
 	Rotation rotation;
 	glm::mat4 scale;
@@ -34,7 +34,7 @@ protected:
 	static int _nextEntityID;
 	std::string _name = "";
 	Renderer* _renderer;
-	Model model;
+	EntityModel model;
 	bool _isLightSource = false;
 	Shader _entityShader;
 
