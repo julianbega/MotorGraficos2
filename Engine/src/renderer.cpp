@@ -154,6 +154,16 @@ void Renderer::drawCube(Shader& shader, unsigned int& vao, unsigned int& vbo, fl
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     unbindBuffers();
 }
+void Renderer::drawMesh(Shader& shader, unsigned int& vao, unsigned int& vbo, glm::mat4& model, std::vector<unsigned int>& indices)
+{
+	shader.useProgram();
+	shader.setMat4("transform", model);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(vao);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
 
 void Renderer::drawLight(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmount, glm::mat4 model)
 {

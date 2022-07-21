@@ -3,6 +3,7 @@
 #include "export.h"
 #include "shader.h"
 #include "mat4x4.hpp"
+#include <vector>
 
 class ENGINE_API Renderer {
 public:
@@ -30,6 +31,7 @@ public:
 	void drawSprite(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model);
 	void drawCamera(Shader& shader, glm::mat4 model, glm::mat4 view, glm::mat4 proj);
 	void drawCube(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmmount, glm::mat4 model);
+	void drawMesh(Shader& shader, unsigned int& vao, unsigned int& vbo, glm::mat4& model, std::vector<unsigned int>& indices);
 	void drawLight(Shader& shader, unsigned int& vao, unsigned int& vbo, float* vertices, int verticesAmount, glm::mat4 model);
 
 	void activateWireframeMode();

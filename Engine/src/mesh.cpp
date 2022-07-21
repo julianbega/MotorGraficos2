@@ -48,10 +48,8 @@ void Mesh::SetUpMesh() {
 	glBindVertexArray(0);
 }
 
-void Mesh::Draw(Shader& shader, glm::mat4 mvp) {
-	updateMatrices();
-	updateModel();
-	//Pasar este codigo a renderer y que reciba como parametros todos los datos necesarios
+void Mesh::bindTextures(Shader& shader)
+{
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
 	unsigned int normalNr = 1;
@@ -64,16 +62,20 @@ void Mesh::Draw(Shader& shader, glm::mat4 mvp) {
 			number = std::to_string(diffuseNr++);
 		else if (name == "specular")
 			number = std::to_string(specularNr++);
-	
+
 		glUniform1f(glGetUniformLocation(shader.getID(), ("material." + name).c_str()), i);
 		//glUniform1f(glGetUniformLocation(shader.GetID(), (name + number).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
+}
+
+void Mesh::Draw(Shader& shader, glm::mat4 mvp) {
+	updateMatrices();
+	updateModel();
+	bindTextures(shader);
 
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	shader.useProgram();
-	shader.setMat4("transform", mvp ); // si no funca chequear que lo mande al vertex en lugar del fragment
 
 	_positionAttrib = glGetAttribLocation(shader.getID(), "inPosition");
 	glVertexAttribPointer(_positionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
@@ -91,10 +93,8 @@ void Mesh::Draw(Shader& shader, glm::mat4 mvp) {
 	glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
 	glEnableVertexAttribArray(_colorAttrib);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+
+	_renderer->drawMesh(shader, _vao, _vbo, mvp, indices);
 
 
-	glBindVertexArray(_vao);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
 }

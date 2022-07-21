@@ -38,6 +38,7 @@ namespace Engine {
 		unsigned int _colorAttrib;
 		Shader _shader;
 		void SetUpMesh();
+		void bindTextures(Shader& shader);
 		Renderer *_renderer;
 	public:
 		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, Shader shader);
