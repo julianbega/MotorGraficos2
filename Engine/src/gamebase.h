@@ -36,6 +36,7 @@ protected:
 
 public: 
 	Gamebase();
+	Gamebase(CameraType type);
 	~Gamebase();
 	int InitEngine();
 	void UpdateEngine();
@@ -47,6 +48,9 @@ public:
 
 private:
 	 void mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn);
+	 void CameraInputs();
+	 float speed = 1;
+	 float rotationSpeed = 100;
 };
 #endif // !GAMEBASE_H
 

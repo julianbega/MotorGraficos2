@@ -18,7 +18,21 @@ Camera::Camera(Window* window, Renderer* renderer, ProjectionType type) : Entity
 	_type = type;
 	_worldUp = glm::vec3(0, 1, 0);
 	_forward = glm::vec3(0, 0, -1);
+	camOffset = glm::vec3(0, 0, 0);
 
+	DataManager* data = DataManager::Get();
+	data->addEntity(this, _id);
+}
+
+Camera::Camera(Window* window, Renderer* renderer, ProjectionType type, CameraType cameraType) : Entity(renderer) {
+	_window = window;
+	_view = glm::mat4(1.0f);
+	_proj = glm::mat4(1.0f);
+	_name = "Camera";
+	_type = type;
+	_worldUp = glm::vec3(0, 1, 0);
+	_forward = glm::vec3(0, 0, -1);
+	camType = cameraType;
 	DataManager* data = DataManager::Get();
 	data->addEntity(this, _id);
 }
@@ -28,7 +42,22 @@ Camera::~Camera() {
 }
 
 void Camera::updateView() {
+	if(camType == CameraType::free)
 	_view = glm::lookAt(transform.position, transform.position +  _forward, _up);
+
+	if (camType == CameraType::first)
+	{
+		_view = glm::lookAt(transform.position, transform.position + _forward, _up);
+		if(playerTarget != nullptr)
+		transform.position = playerTarget->position;
+	}
+	if (camType == CameraType::third)
+	{
+		if (playerTarget != nullptr){
+		_view = glm::lookAt(transform.position, playerTarget->position, _up);
+		transform.position = playerTarget->position + camOffset;
+		}
+	}
 }
 
 void Camera::setProjection(ProjectionType type) {
@@ -129,3 +158,16 @@ void Camera::updateShader(Shader& shader){
 void Camera::setDirection(glm::vec3 target){
 	_inverseDirection = glm::normalize(transform.position - target);
 }
+
+void Camera::setTarget(Transform* player)
+{
+	playerTarget = player;
+}
+
+void Camera::setOffset(float Xoffset, float Yoffset, float Zoffset)
+{
+	camOffset = glm::vec3(Xoffset, Yoffset, Zoffset);
+}
+
+
+

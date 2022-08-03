@@ -21,6 +21,16 @@ Gamebase::Gamebase() {
     camera = new Camera(window, renderer, ProjectionType::perspective);
 }
 
+Gamebase::Gamebase(CameraType type) {
+	window = new Window(1280, 720);
+	renderer = new Renderer();
+	dataManager = DataManager::Get();
+	gui = new GuiLayer(window, dataManager);
+	inspector = new Inspector(window, dataManager);
+	worldData = new WorldData(window, dataManager);
+	camera = new Camera(window, renderer, ProjectionType::perspective, type);
+}
+
 Gamebase::~Gamebase() {
     if (window) delete window; window = nullptr;
     if (renderer) delete renderer; renderer = nullptr;
@@ -99,7 +109,7 @@ void Gamebase::UpdateEngine() {
 
         camera->draw(standardShader);
         standardShader.setVec3("viewPos", camera->transform.position);
-
+		CameraInputs();
 		Update();
 
         if (gui->getWireFrameMode()) {
@@ -128,4 +138,64 @@ void Gamebase::UnloadEngine() {
 void Gamebase::mouse_callback(GLFWwindow* window, double xPosIn, double yPosIn)
 {
 
+}
+
+void Gamebase::CameraInputs()
+{
+	if (camera->camType == CameraType::free)
+	{
+		if (input.getKey(keyCode::W)) {
+			camera->transform.position += camera->getForward() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::S)) {
+			camera->transform.position -= camera->getForward() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::A)) {
+			camera->transform.position -= camera->getRight() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::D)) {
+			camera->transform.position += camera->getRight() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::Q)) {
+			camera->transform.position -= camera->getUp() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::E)) {
+			camera->transform.position += camera->getUp() * (speed * time.getDeltaTime());
+		}
+		if (input.getKey(keyCode::RIGHT)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotateYaw(camera->rotationSpeed);
+		}
+		if (input.getKey(keyCode::LEFT)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotateYaw(-camera->rotationSpeed);
+		}
+		if (input.getKey(keyCode::UP)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotatePitch(camera->rotationSpeed);
+		}
+		if (input.getKey(keyCode::DOWN)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotatePitch(-camera->rotationSpeed);
+		}
+	}
+	if (camera->camType == CameraType::first)
+	{		
+		if (input.getKey(keyCode::RIGHT)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotateYaw(camera->rotationSpeed);
+		}
+		if (input.getKey(keyCode::LEFT)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotateYaw(-camera->rotationSpeed);
+		}
+		if (input.getKey(keyCode::UP)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotatePitch(camera->rotationSpeed);
+		}
+		if (input.getKey(keyCode::DOWN)) {
+			camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
+			camera->rotatePitch(-camera->rotationSpeed);
+		}
+	}
 }

@@ -1,7 +1,7 @@
 #include "game.h"
 #include <windows.data.json.h>
 
-Game::Game() : Gamebase(){
+Game::Game() : Gamebase(CameraType::third){
 }
 	
 Game::~Game() {
@@ -47,12 +47,16 @@ void Game::Init() {
 	model = new Model(renderer, standardShader, "res/models/cyborg/cyborg.obj");
 	model->SetPosition(0.0f, 0.0f, 0.0f);
 	model->SetScale(0.25f, 0.25f, 0.25f);
+
+
+	camera->setTarget(&model->transform);
+	camera->setOffset(0.0f, 1.0f, 2.0f);
 }
 
 	//game update
 void Game::Update() {
 	//input
-	Inputs();
+	Inputs(); 
 
 
 	timer += time.getDeltaTime();
@@ -69,43 +73,11 @@ void Game::Update() {
 void Game::Inputs() {
 	// add inputs here
 
-	if (input.getKey(keyCode::W)) {
-		camera->transform.position += camera->getForward() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::S)) {
-		camera->transform.position -= camera->getForward() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::A)) {
-		camera->transform.position -= camera->getRight() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::D)) {
-		camera->transform.position += camera->getRight() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::Q)) {
-		camera->transform.position -= camera->getUp() * (speed * time.getDeltaTime());
-	}
-	if (input.getKey(keyCode::E)) {
-		camera->transform.position += camera->getUp() * (speed * time.getDeltaTime());
-	}
+
 	if (input.getKey(keyCode::P)) {
 		point->isActive = !point->isActive;
 	}
-	if (input.getKey(keyCode::RIGHT)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotateYaw(camera->rotationSpeed);
-	}
-	if (input.getKey(keyCode::LEFT)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotateYaw(-camera->rotationSpeed);
-	}
-	if (input.getKey(keyCode::UP)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotatePitch(camera->rotationSpeed);
-	}
-	if (input.getKey(keyCode::DOWN)) {
-		camera->rotationSpeed = rotationSpeed * time.getDeltaTime();
-		camera->rotatePitch(-camera->rotationSpeed);
-	}
+
 	if (input.getKey(keyCode::R)) {
 		model->SetScale(model->getScale().x + 0.01f, model->getScale().y + 0.01f, model->getScale().z + 0.01f);		
 	}
